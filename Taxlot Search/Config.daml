@@ -1,0 +1,74 @@
+﻿<ArcGIS defaultAssembly="Taxlot Search.dll" defaultNamespace="Taxlot_Search" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
+  <AddInInfo id="{83ad4350-4ad1-4f30-8ae6-ca5daa0326b7}" version="1.0" desktopVersion="2.8.29751">
+    <Name>Linn_County_Tools</Name>
+    <Description>Find taxlots in the Linn County taxlot layer by map/pin or assessor number</Description>
+    <Image>Images\mapSearch32.png</Image>
+    <Author>Keith Olsen, kolsen@co.linn.or.us</Author>
+    <Company>Linn County, www.co.linn.or.us</Company>
+    <Date>6/30/2021 1:27:29 PM</Date>
+    <Subject>Map Exploration</Subject>
+    <!-- Note subject can be one or more of these topics:
+                    Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
+  </AddInInfo>
+  <modules>
+    <insertModule id="Taxlot_Search_Module" className="Module1" autoLoad="false" caption="Module1">
+      <!-- uncomment to have the control hosted on a separate tab-->
+      <tabs>
+        <tab id="Linn_County_Tools1" caption="Linn County Tools" keytip="z1">
+          <group refID="Linn_County_GIS_findProperty" />
+          <group refID="Linn_County_GIS_loadImages" />
+          <group refID="Linn_County_GIS_Label" />
+        </tab>
+      </tabs>
+      <groups>
+        <!-- comment this out if you have no controls on the Addin tab to avoid
+              an empty group-->
+        <group id="Linn_County_GIS_findProperty" caption="Find Property" appearsOnAddInTab="false" keytip="z2">
+          <!-- host controls within groups -->
+          <button refID="Taxlot_Search_TaxlotSearchDockpane_ShowButton" size="large" />
+        </group>
+        <group id="Linn_County_GIS_loadImages" caption="Load County Data" appearsOnAddInTab="false" keytip="z3">
+          <!-- host controls within groups -->
+          <gallery refID="Taxlot_Search_BaseLayersGallery" inline="false" size="large" />
+          <comboBox refID="Taxlot_Search_LoadImagesCbox" />
+          <comboBox refID="Taxlot_Search_LoadImagesCityCbox" />
+          <comboBox refID="Taxlot_Search_LoadImagesHistoricalCbox" />
+        </group>
+        <group id="Linn_County_GIS_Label" caption="Label Features" appearsOnAddInTab="false" keytip="z4">
+          <button refID="Taxlot_Search_LabelDockpane_ShowButton" size="large" />
+        </group>
+      </groups>
+      <controls>
+        <!-- add your controls here -->
+        <button id="Taxlot_Search_TaxlotSearchDockpane_ShowButton" caption="Taxlot/Address Search" className="TaxlotSearchDockpane_ShowButton" loadOnClick="true" smallImage="Images\mapSearch16.png" largeImage="Images\mapSearch32.png" keytip="y1">
+          <tooltip heading="Taxlot/Address Search">Enter Map/PIN or Assessor Number/Owner Name to search for a taxlot on the map. Enter an address number/street to search for addresses.<disabledText /></tooltip>
+        </button>
+        <comboBox id="Taxlot_Search_LoadImagesCbox" caption="Recent Images" className="LoadImagesCbox" rows="10" itemWidth="140" extendedCaption="Extended Caption - Recent" isEditable="false" isReadOnly="true" resizable="true" keytip="y2">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </comboBox>
+        <comboBox id="Taxlot_Search_LoadImagesCityCbox" caption="City Images" className="LoadImagesCityCbox" rows="10" itemWidth="140" extendedCaption="Extended Caption" isEditable="false" isReadOnly="true" resizable="true" keytip="y3">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </comboBox>
+        <comboBox id="Taxlot_Search_LoadImagesHistoricalCbox" caption="Historical Imgs" className="LoadImagesHistoricalCbox" rows="10" itemWidth="140" extendedCaption="Extended Caption" isEditable="false" isReadOnly="true" resizable="true" keytip="y4">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </comboBox>
+        <button id="Taxlot_Search_LabelDockpane_ShowButton" caption="Label Wizard" className="LabelDockpane_ShowButton" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple32.png" keytip="y5">
+          <tooltip heading="Label Wizard">Select any dataset field and place a label on the map<disabledText /></tooltip>
+        </button>
+      </controls>
+      <dockPanes>
+        <dockPane id="Taxlot_Search_TaxlotSearchDockpane" caption="Taxlot/Address Search" className="TaxlotSearchDockpaneViewModel" dock="group" dockWith="esri_core_contentsDockPane">
+          <content className="TaxlotSearchDockpaneView" />
+        </dockPane>
+        <dockPane id="Taxlot_Search_LabelDockpane" caption="Label Wizard" className="LabelDockpaneViewModel" dock="group" dockWith="esri_core_contentsDockPane">
+          <content className="LabelDockpaneView" />
+        </dockPane>
+      </dockPanes>
+      <galleries>
+        <gallery id="Taxlot_Search_BaseLayersGallery" caption="Load Base Layers" className="BaseLayersGallery" itemsInRow="3" resizable="true" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonOrange32.png" keytip="z4">
+          <tooltip heading="Load Base Layers">Select a Base Layer to load into the current map<disabledText /></tooltip>
+        </gallery>
+      </galleries>
+    </insertModule>
+  </modules>
+</ArcGIS>
