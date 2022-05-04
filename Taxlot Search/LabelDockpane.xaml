@@ -6,7 +6,7 @@
              xmlns:ui="clr-namespace:Taxlot_Search"
              xmlns:extensions="clr-namespace:ArcGIS.Desktop.Extensions;assembly=ArcGIS.Desktop.Extensions"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="600" d:DesignWidth="300"
              d:DataContext="{Binding Path=ui.LabelDockpaneViewModel}">
      <UserControl.Resources>
         <ResourceDictionary>
@@ -28,7 +28,59 @@
                         <TextBlock Text="{Binding Heading}" TextWrapping="Wrap"/>
                     </WrapPanel>
                 </TextBlock.ToolTip>
-      </TextBlock>
+            </TextBlock>
         </DockPanel>
+        <StackPanel Grid.Row="1" DockPanel.Dock="Top" Margin="5">
+            <Grid x:Name="LabelMapControls">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="95" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Foreground="#FF8D8D8D">Layer</Label>
+                <ComboBox x:Name="cBoxLayer" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedLayer, Mode=TwoWay}" Margin="5" Width="180"/>
+                <Label Grid.Column="0" Grid.Row="1" Foreground="#FF8D8D8D">Field</Label>
+                <ComboBox x:Name="cBoxField" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Fields}" SelectedItem="{Binding SelectedField, Mode=TwoWay}" DisplayMemberPath="Name" Margin="5" Width="180"/>
+                <Label Grid.Column="0" Grid.Row="2" Foreground="#FF8D8D8D">Font Size</Label>
+                <ComboBox x:Name="cBoxFontSize" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding TextSizes}" SelectedItem="{Binding SelectedFontSize, Mode=OneWayToSource}" Margin="5" Width="180"/>
+            </Grid>
+            <Grid x:Name="LabelMapButton">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <!--<Button x:Name="btnLabelMapFeature" Margin="10" Height="25" Click="btnLabelMapFeature_Click">Label Map Features</Button>-->
+                <ToggleButton x:Name="btnLabelMapFeature" Margin="10" Height="25" Command="{Binding SelectToolCmd}" IsChecked="{Binding SelectToolActive}" >Label Any Map Features</ToggleButton>
+            </Grid>
+            <Separator/>
+            <Grid x:Name="LabelAddressControls">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+            </Grid>
+            <Label Margin="0,0,0,-5" Foreground="#FF8D8D8D" Padding="8" HorizontalAlignment="Center" Content="Select Fields to Label from Taxlot" />
+
+            <CheckBox x:Name="checkBoxPIN" Content="PIN" Grid.Column="0" Grid.Row="0" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotPIN, Mode=OneWayToSource}" Margin="10,0,10,0" />
+            <CheckBox x:Name="checkBoxActNum" Content="Assessor Number" Grid.Column="0" Grid.Row="1" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotActNum, Mode=OneWayToSource}" Margin="10,2,10,0" />
+            <CheckBox x:Name="checkBoxOwnerName" Content="Owner Name" Grid.Column="0" Grid.Row="2" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotOwnerName, Mode=OneWayToSource}" Margin="10,2,10,0" />
+            <CheckBox x:Name="checkBoxOwnerAddress" Content="Owner Address" Grid.Column="0" Grid.Row="3" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotOwnerAddress, Mode=OneWayToSource}" Margin="10,2,10,0" />
+            <CheckBox x:Name="checkBoxAcres" Content="Acres" Grid.Column="0" Grid.Row="4" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotAcres, Mode=OneWayToSource}" Margin="10,2,10,0" />
+
+            <ToggleButton x:Name="btnLabelTaxlot" Margin="10" Height="25" Command="{Binding SelectTaxlotToolCmd}" IsChecked="{Binding SelectTaxlotToolActive}" >Label Taxlot</ToggleButton>
+
+            <Separator/>
+            <ToggleButton x:Name="btnLabelZoning" Margin="10" Height="25" Command="{Binding SelectZoningToolCmd}" IsChecked="{Binding SelectZoningToolActive}" >Label Zoning</ToggleButton>
+            <ToggleButton x:Name="btnLabelRoads" Margin="10" Height="25" Command="{Binding SelectRoadToolCmd}" IsChecked="{Binding SelectRoadToolActive}" >Label Roads</ToggleButton>
+            <Separator/>
+            <ToggleButton x:Name="btnAddDate" Margin="10" Height="25" Command="{Binding SelectLayoutToolCmd}" IsChecked="{Binding SelectLayoutToolActive}" >Add Date to Active Layout</ToggleButton>
+
+        </StackPanel>
     </Grid>
 </UserControl>

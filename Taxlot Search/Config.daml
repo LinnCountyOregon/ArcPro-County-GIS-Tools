@@ -1,11 +1,11 @@
 ﻿<ArcGIS defaultAssembly="Taxlot Search.dll" defaultNamespace="Taxlot_Search" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{83ad4350-4ad1-4f30-8ae6-ca5daa0326b7}" version="1.0" desktopVersion="2.8.29751">
+  <AddInInfo id="{83ad4350-4ad1-4f30-8ae6-ca5daa0326b7}" version="1.1" desktopVersion="2.9">
     <Name>Linn_County_Tools</Name>
     <Description>Find taxlots in the Linn County taxlot layer by map/pin or assessor number</Description>
     <Image>Images\mapSearch32.png</Image>
     <Author>Keith Olsen, kolsen@co.linn.or.us</Author>
     <Company>Linn County, www.co.linn.or.us</Company>
-    <Date>6/30/2021 1:27:29 PM</Date>
+    <Date>4/20/2022</Date>
     <Subject>Map Exploration</Subject>
     <!-- Note subject can be one or more of these topics:
                     Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
@@ -52,9 +52,25 @@
         <comboBox id="Taxlot_Search_LoadImagesHistoricalCbox" caption="Historical Imgs" className="LoadImagesHistoricalCbox" rows="10" itemWidth="140" extendedCaption="Extended Caption" isEditable="false" isReadOnly="true" resizable="true" keytip="y4">
           <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
         </comboBox>
-        <button id="Taxlot_Search_LabelDockpane_ShowButton" caption="Label Wizard" className="LabelDockpane_ShowButton" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple32.png" keytip="y5">
+        <button id="Taxlot_Search_LabelDockpane_ShowButton" caption="Label Wizard" className="LabelDockpane_ShowButton" loadOnClick="true" largeImage="Images\LabelWizard32.png" keytip="y5">
           <tooltip heading="Label Wizard">Select any dataset field and place a label on the map<disabledText /></tooltip>
         </button>
+        <tool id="Taxlot_Search_FeatureSelectionTool" caption="FeatureSelectionTool" className="Taxlot_Search.FeatureSelectionTool" loadOnClick="false" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
+          <tooltip heading="Label Feature">Select Feature to Label<disabledText /></tooltip>
+        </tool>
+        <tool id="Taxlot_Search_FeatureSelectionTool_Taxlot" caption="FeatureSelectionTool _Taxlot" className="Taxlot_Search.FeatureSelectionTool_Taxlot" loadOnClick="false" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </tool>
+        <tool id="Taxlot_Search_FeatureSelectionTool_Zoning" caption="FeatureSelectionTool _Zoning" className="Taxlot_Search.FeatureSelectionTool_Zoning" loadOnClick="false" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </tool>
+        <tool id="Taxlot_Search_FeatureSelectionTool_Roads" caption="FeatureSelectionTool _Roads" className="Taxlot_Search.FeatureSelectionTool_Roads" loadOnClick="false" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </tool>
+        <!--use condition="esri_layouts_layoutPane" to enable only in layout view-->
+        <tool id="Taxlot_Search_AddTextToLayout" caption="AddTextToLayout" className="Taxlot_Search.AddTextToLayout" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_layouts_layoutPane">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </tool>
       </controls>
       <dockPanes>
         <dockPane id="Taxlot_Search_TaxlotSearchDockpane" caption="Taxlot/Address Search" className="TaxlotSearchDockpaneViewModel" dock="group" dockWith="esri_core_contentsDockPane">

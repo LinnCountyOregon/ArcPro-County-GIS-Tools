@@ -34,7 +34,7 @@ namespace Taxlot_Search
         public static List<string> allowedAddressNames = new List<string> { "address" };
         Map _activeMap;
 
-        protected TaxlotSearchDockpaneViewModel() 
+        protected TaxlotSearchDockpaneViewModel()
         {
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_layers, _lock);
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_propertyInfoList, _lock);

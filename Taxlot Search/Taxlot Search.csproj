@@ -123,7 +123,12 @@
     <AddInContent Include="DarkImages\AddInDesktop32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddTextToLayout.cs" />
     <Compile Include="BaseLayersGallery.cs" />
+    <Compile Include="FeatureSelectionTool.cs" />
+    <Compile Include="FeatureSelectionTool_Roads.cs" />
+    <Compile Include="FeatureSelectionTool_Taxlot.cs" />
+    <Compile Include="FeatureSelectionTool_Zoning.cs" />
     <Compile Include="LabelDockpane.xaml.cs">
       <DependentUpon>LabelDockpane.xaml</DependentUpon>
     </Compile>
@@ -236,6 +241,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="DarkImages\GalleryImages\AddCountyBoundary64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AddInContent Include="Images\LabelWizard32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AddInContent Include="DarkImages\LabelWizard32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--

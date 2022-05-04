@@ -24,6 +24,7 @@ namespace Taxlot_Search
     {
         private static Module1 _this = null;
         private const string _dockPaneID = "Taxlot_Search_TaxlotSearchDockpane";
+        private const string _labelDockPaneID = "Taxlot_Search_LabelDockpane";
 
         /// <summary>
         /// Retrieve the singleton instance to this module here
@@ -33,6 +34,22 @@ namespace Taxlot_Search
             get
             {
                 return _this ?? (_this = (Module1)FrameworkApplication.FindModule("Taxlot_Search_Module"));
+            }
+        }
+
+        /// <summary>
+        /// Stores the instance of the Feature Selection dock pane viewmodel
+        /// </summary>
+        private static LabelDockpaneViewModel _labelDockPane;
+        internal static LabelDockpaneViewModel LabelVM
+        {
+            get
+            {
+                if (_labelDockPane == null)
+                {
+                    _labelDockPane = FrameworkApplication.DockPaneManager.Find(_labelDockPaneID) as LabelDockpaneViewModel;
+                }
+                return _labelDockPane;
             }
         }
 

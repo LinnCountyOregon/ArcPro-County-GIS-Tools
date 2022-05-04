@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ArcGIS.Desktop.Mapping;
+using System.Collections.ObjectModel;
+using ArcGIS.Desktop.Framework.Threading.Tasks;
 
 
 namespace Taxlot_Search
@@ -24,6 +27,24 @@ namespace Taxlot_Search
         public LabelDockpaneView()
         {
             InitializeComponent();
+
+            foreach (int fSize in Enumerable.Range(5, 20)) {
+                cBoxFontSize.Items.Add(fSize);
+            }
+
+            cBoxFontSize.Items.Add(36);
+            cBoxFontSize.Items.Add(42);
+            cBoxFontSize.Items.Add(48);
+
+            cBoxFontSize.SelectedItem = 10;
+
+            checkBoxPIN.IsChecked = true;
+            checkBoxActNum.IsChecked = false;
+            checkBoxOwnerName.IsChecked = true;
+            checkBoxOwnerAddress.IsChecked = true;
+            checkBoxAcres.IsChecked = true;
         }
+
+
     }
 }
