@@ -46,14 +46,20 @@
                 <Label Grid.Column="0" Grid.Row="1" Foreground="#FF8D8D8D">Field</Label>
                 <ComboBox x:Name="cBoxField" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Fields}" SelectedItem="{Binding SelectedField, Mode=TwoWay}" DisplayMemberPath="Name" Margin="5" Width="180"/>
                 <Label Grid.Column="0" Grid.Row="2" Foreground="#FF8D8D8D">Font Size</Label>
-                <ComboBox x:Name="cBoxFontSize" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding TextSizes}" SelectedItem="{Binding SelectedFontSize, Mode=OneWayToSource}" Margin="5" Width="180"/>
+                <ComboBox x:Name="cBoxFontSize" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding TextSizes}" SelectedItem="{Binding SelectedFontSize, Mode=OneWayToSource}" Margin="5" Width="180" ToolTip="Set the font size for all labeling tools in this Label Wizard." />
             </Grid>
             <Grid x:Name="LabelMapButton">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <!--<Button x:Name="btnLabelMapFeature" Margin="10" Height="25" Click="btnLabelMapFeature_Click">Label Map Features</Button>-->
-                <ToggleButton x:Name="btnLabelMapFeature" Margin="10" Height="25" Command="{Binding SelectToolCmd}" IsChecked="{Binding SelectToolActive}" >Label Any Map Features</ToggleButton>
+                <ToggleButton x:Name="btnLabelMapFeature" Margin="10" Height="25" Command="{Binding SelectToolCmd}" IsChecked="{Binding SelectToolActive}" Content="Label Map Features">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Select a feature on the map. The data in the selected field will appear as text at the selected point." />
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                </ToggleButton>
             </Grid>
             <Separator/>
             <Grid x:Name="LabelAddressControls">
@@ -73,13 +79,37 @@
             <CheckBox x:Name="checkBoxOwnerAddress" Content="Owner Address" Grid.Column="0" Grid.Row="3" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotOwnerAddress, Mode=OneWayToSource}" Margin="10,2,10,0" />
             <CheckBox x:Name="checkBoxAcres" Content="Acres" Grid.Column="0" Grid.Row="4" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotAcres, Mode=OneWayToSource}" Margin="10,2,10,0" />
 
-            <ToggleButton x:Name="btnLabelTaxlot" Margin="10" Height="25" Command="{Binding SelectTaxlotToolCmd}" IsChecked="{Binding SelectTaxlotToolActive}" >Label Taxlot</ToggleButton>
+            <ToggleButton x:Name="btnLabelTaxlot" Margin="10" Height="25" Command="{Binding SelectTaxlotToolCmd}" IsChecked="{Binding SelectTaxlotToolActive}" Content="Label Taxlot">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock Text="Select a taxlot feature on the map. The selected fields will appear as text at the selected point." />
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+            </ToggleButton>
 
             <Separator/>
-            <ToggleButton x:Name="btnLabelZoning" Margin="10" Height="25" Command="{Binding SelectZoningToolCmd}" IsChecked="{Binding SelectZoningToolActive}" >Label Zoning</ToggleButton>
-            <ToggleButton x:Name="btnLabelRoads" Margin="10" Height="25" Command="{Binding SelectRoadToolCmd}" IsChecked="{Binding SelectRoadToolActive}" >Label Roads</ToggleButton>
+            <ToggleButton x:Name="btnLabelZoning" Margin="10" Height="25" Command="{Binding SelectZoningToolCmd}" IsChecked="{Binding SelectZoningToolActive}" Content="Label Zoning">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock Text="Select a zoning feature on the map. The zone abbreviaton will appear as text at the selected point." />
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+            </ToggleButton>
+            <ToggleButton x:Name="btnLabelRoads" Margin="10" Height="25" Command="{Binding SelectRoadToolCmd}" IsChecked="{Binding SelectRoadToolActive}" Content="Label Roads">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock Text="Select a road feature on the map. The road name will appear as text along the nearest road segment." />
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+            </ToggleButton>
             <Separator/>
-            <ToggleButton x:Name="btnAddDate" Margin="10" Height="25" Command="{Binding SelectLayoutToolCmd}" IsChecked="{Binding SelectLayoutToolActive}" >Add Date to Active Layout</ToggleButton>
+            <ToggleButton x:Name="btnAddDate" Margin="10" Height="25" Command="{Binding SelectLayoutToolCmd}" IsChecked="{Binding SelectLayoutToolActive}" Content="Add Date to Active Layout">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock Text="Select a place on the active layout to place the date text. The font size is set from the dropdown list above." />
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+            </ToggleButton>
 
         </StackPanel>
     </Grid>

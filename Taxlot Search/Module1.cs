@@ -65,7 +65,7 @@ namespace Taxlot_Search
             if (pane != null)
                 pane.IsVisible = false;
 
-            DockPane pane2 = FrameworkApplication.DockPaneManager.Find("Taxlot_Search_LabelDockpane");
+            DockPane pane2 = FrameworkApplication.DockPaneManager.Find(_labelDockPaneID);
             if (pane2 != null)
                 pane2.IsVisible = false;
 
