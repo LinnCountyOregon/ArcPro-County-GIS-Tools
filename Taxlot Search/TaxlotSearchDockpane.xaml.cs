@@ -29,16 +29,16 @@ namespace Taxlot_Search
         {
             InitializeComponent();
 
-            cBoxTownship.ItemsSource = new List<string> { "09S","10S","11S","12S","13S","14S","15S","16S" };
-            cBoxRange.ItemsSource = new List<string> { "05W","04W","03W","02W","01W","01E","02E","03E","04E","05E","06E","07E","75E","08E" };
+            //cBoxTownship.ItemsSource = new List<string> { "09S","10S","11S","12S","13S","14S","15S","16S" };
+            //cBoxRange.ItemsSource = new List<string> { "05W","04W","03W","02W","01W","01E","02E","03E","04E","05E","06E","07E","75E","08E" };
 
-            for (int secNum = 0; secNum < 37; secNum++)
-            {
-                cBoxSection.Items.Add(secNum);
-            }                
+            //for (int secNum = 0; secNum < 37; secNum++)
+            //{
+            //    cBoxSection.Items.Add(secNum);
+            //}                
 
-            cBoxQtrSec.ItemsSource = new List<string> { " ","A", "B", "C", "D" };
-            cBoxQtrQtrSec.ItemsSource = new List<string> { " ","A", "B", "C", "D" };
+            //cBoxQtrSec.ItemsSource = new List<string> { " ","A", "B", "C", "D" };
+            //cBoxQtrQtrSec.ItemsSource = new List<string> { " ","A", "B", "C", "D" };
 
             cBoxCity.Items.Add("Entire County");
             cBoxCity.Items.Add("Albany");
@@ -84,16 +84,16 @@ namespace Taxlot_Search
         //    cBoxQtrQtrSec.SelectedItem = null;
         //}
 
-        private async void btnSearchPIN_Click(object sender, RoutedEventArgs e)
-        {
-            if (cBoxLayer.SelectedValue != null)
-            {
-                if (TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()) || TaxlotSearchDockpaneViewModel.allowedAddressNames.Contains(cBoxLayer.Text.ToLower()))
-                    await selectTaxlotAddress(txtTaxlotPIN.Text);
-                else { MessageBox.Show("To search on taxlot PIN, the Linn County taxlot or address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
-            }
-            else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }                
-        }
+        //private async void btnSearchPIN_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (cBoxLayer.SelectedValue != null)
+        //    {
+        //        if (TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()) || TaxlotSearchDockpaneViewModel.allowedAddressNames.Contains(cBoxLayer.Text.ToLower()))
+        //            await selectTaxlotAddress(txtTaxlotPIN.Text);
+        //        else { MessageBox.Show("To search on taxlot PIN, the Linn County taxlot or address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
+        //    }
+        //    else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }                
+        //}
 
         private bool validateMAPinput()
         {
@@ -126,104 +126,104 @@ namespace Taxlot_Search
                 return false;
         }
 
-        private async void btnSearchMap_Click(object sender, RoutedEventArgs e)
-        {
-            if (cBoxLayer.SelectedValue != null)
-            {
-                if (TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()) || TaxlotSearchDockpaneViewModel.allowedAddressNames.Contains(cBoxLayer.Text.ToLower()))
-                {
-                    if (txtTaxlotMap.Text.Length > 10)
-                        await selectTaxlotAddress(txtTaxlotMap.Text.Substring(0, 10));
-                    else
-                        await selectTaxlotAddress(txtTaxlotMap.Text);
-                }
-                else { MessageBox.Show("To search on taxlot MAP, the Linn County taxlot or address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
-            }
-            else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }                
-        }
+        //private async void btnSearchMap_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (cBoxLayer.SelectedValue != null)
+        //    {
+        //        if (TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()) || TaxlotSearchDockpaneViewModel.allowedAddressNames.Contains(cBoxLayer.Text.ToLower()))
+        //        {
+        //            if (txtTaxlotMap.Text.Length > 10)
+        //                await selectTaxlotAddress(txtTaxlotMap.Text.Substring(0, 10));
+        //            else
+        //                await selectTaxlotAddress(txtTaxlotMap.Text);
+        //        }
+        //        else { MessageBox.Show("To search on taxlot MAP, the Linn County taxlot or address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
+        //    }
+        //    else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }                
+        //}
 
-        private async Task selectTaxlotAddress(string mapPIN, int AssessorNum = 0)
-        {
-            var featLayer = MapView.Active.Map.FindLayers(cBoxLayer.Text).FirstOrDefault() as FeatureLayer;
-            if (featLayer != null)
-            {
-                string selectedLayer;
-                if (TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()))
-                    selectedLayer = "taxlots";
-                else if (TaxlotSearchDockpaneViewModel.allowedAddressNames.Contains(cBoxLayer.Text.ToLower()))
-                    selectedLayer = "address";
-                else
-                    selectedLayer = "(Not Found)";
+        //private async Task selectTaxlotAddress(string mapPIN, int AssessorNum = 0)
+        //{
+        //    var featLayer = MapView.Active.Map.FindLayers(cBoxLayer.Text).FirstOrDefault() as FeatureLayer;
+        //    if (featLayer != null)
+        //    {
+        //        string selectedLayer;
+        //        if (TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()))
+        //            selectedLayer = "taxlots";
+        //        else if (TaxlotSearchDockpaneViewModel.allowedAddressNames.Contains(cBoxLayer.Text.ToLower()))
+        //            selectedLayer = "address";
+        //        else
+        //            selectedLayer = "(Not Found)";
 
-                Selection featSelection = await QueuedTask.Run<Selection>(() =>
-                {
-                    // clear all map selections
-                    MapView.Active.Map.SetSelection(null);
+        //        Selection featSelection = await QueuedTask.Run<Selection>(() =>
+        //        {
+        //            // clear all map selections
+        //            MapView.Active.Map.SetSelection(null);
 
-                    // create query filter for selection
-                    QueryFilter queryFilter = new QueryFilter();
+        //            // create query filter for selection
+        //            QueryFilter queryFilter = new QueryFilter();
 
-                    if (AssessorNum > 0)
-                    {
-                        if (selectedLayer == "taxlots")
-                            queryFilter.WhereClause = "ACTNUM = " + AssessorNum.ToString();
-                        else if (selectedLayer == "address")
-                            queryFilter.WhereClause = "ACT_NUM = " + AssessorNum.ToString();
-                    }
-                    else if (mapPIN.Length == 15)
-                    {
-                        if (selectedLayer == "taxlots")
-                            queryFilter.WhereClause = "PIN = '" + mapPIN + "'";
-                        else if (selectedLayer == "address")
-                            queryFilter.WhereClause = "MAP_PIN = '" + mapPIN + "'";
-                    }
-                    else
-                    {
-                        if (selectedLayer == "taxlots")
-                            queryFilter.WhereClause = "MAP = '" + mapPIN + "'";
-                        else if (selectedLayer == "address")
-                            queryFilter.WhereClause = "MAP_NUM = '" + mapPIN + "'";
-                    }
+        //            if (AssessorNum > 0)
+        //            {
+        //                if (selectedLayer == "taxlots")
+        //                    queryFilter.WhereClause = "ACTNUM = " + AssessorNum.ToString();
+        //                else if (selectedLayer == "address")
+        //                    queryFilter.WhereClause = "ACT_NUM = " + AssessorNum.ToString();
+        //            }
+        //            else if (mapPIN.Length == 15)
+        //            {
+        //                if (selectedLayer == "taxlots")
+        //                    queryFilter.WhereClause = "PIN = '" + mapPIN + "'";
+        //                else if (selectedLayer == "address")
+        //                    queryFilter.WhereClause = "MAP_PIN = '" + mapPIN + "'";
+        //            }
+        //            else
+        //            {
+        //                if (selectedLayer == "taxlots")
+        //                    queryFilter.WhereClause = "MAP = '" + mapPIN + "'";
+        //                else if (selectedLayer == "address")
+        //                    queryFilter.WhereClause = "MAP_NUM = '" + mapPIN + "'";
+        //            }
 
-                    Selection resultSel = featLayer.Select(queryFilter, SelectionCombinationMethod.New);
+        //            Selection resultSel = featLayer.Select(queryFilter, SelectionCombinationMethod.New);
 
-                    if (resultSel.GetCount() == 0)
-                        if (AssessorNum > 0)                        
-                            MessageBox.Show("Assessor Number: " + AssessorNum.ToString() + " not found on layer: " + selectedLayer.ToUpper(), "Taxlot/Address Search Alert");
-                        else
-                            MessageBox.Show("Map/PIN: " + mapPIN + " not found on layer: " + selectedLayer.ToUpper(), "Taxlot/Address Search Alert");
-                    else
-                    {
-                        MapView.Active.ZoomToSelected();
-                        MapView.Active.ZoomOutFixed();
-                    }
+        //            if (resultSel.GetCount() == 0)
+        //                if (AssessorNum > 0)                        
+        //                    MessageBox.Show("Assessor Number: " + AssessorNum.ToString() + " not found on layer: " + selectedLayer.ToUpper(), "Taxlot/Address Search Alert");
+        //                else
+        //                    MessageBox.Show("Map/PIN: " + mapPIN + " not found on layer: " + selectedLayer.ToUpper(), "Taxlot/Address Search Alert");
+        //            else
+        //            {
+        //                MapView.Active.ZoomToSelected();
+        //                MapView.Active.ZoomOutFixed();
+        //            }
 
-                    return resultSel;
-                });
-            }
-        }
+        //            return resultSel;
+        //        });
+        //    }
+        //}
 
-        private async void btnSearchAssessorNum_Click(object sender, RoutedEventArgs e)
-        {
-            if (!TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()))
-                SwitchSelectedMapLayer();
+        //private async void btnSearchAssessorNum_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (!TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()))
+        //        SwitchSelectedMapLayer();
 
-            if (cBoxLayer.SelectedValue != null)
-            {
-                if (TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()))
-                {
-                    if (validateNumber(txtAssessorNum.Text))
-                    {
-                        int assessorNum;
-                        bool success = Int32.TryParse(txtAssessorNum.Text, out assessorNum);
-                        await selectTaxlotAddress("", assessorNum);
-                    }
-                    else { MessageBox.Show("Enter a valid number into the Assessor number box.", "Taxlot/Address Search Alert"); }
-                }
-                else { MessageBox.Show("To search on Assessor number, the Linn County taxlot layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
-            }
-            else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }
-        }
+        //    if (cBoxLayer.SelectedValue != null)
+        //    {
+        //        if (TaxlotSearchDockpaneViewModel.allowedTaxlotNames.Contains(cBoxLayer.Text.ToLower()))
+        //        {
+        //            if (validateNumber(txtAssessorNum.Text))
+        //            {
+        //                int assessorNum;
+        //                bool success = Int32.TryParse(txtAssessorNum.Text, out assessorNum);
+        //                await selectTaxlotAddress("", assessorNum);
+        //            }
+        //            else { MessageBox.Show("Enter a valid number into the Assessor number box.", "Taxlot/Address Search Alert"); }
+        //        }
+        //        else { MessageBox.Show("To search on Assessor number, the Linn County taxlot layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
+        //    }
+        //    else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }
+        //}
 
         private async void btnSearchOwner_Click(object sender, RoutedEventArgs e)
         {
@@ -451,42 +451,42 @@ namespace Taxlot_Search
             }
         }
 
-        private void btnClearSearchList_Click(object sender, RoutedEventArgs e)
-        {
-            ClearAndZoomFull();
+        //private void btnClearSearchList_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ClearAndZoomFull();
 
-            txtNumber.TextChanged -= txtNumber_TextChanged;
-            txtStreet.TextChanged -= txtStreet_TextChanged;
-            cBoxCity.SelectionChanged -= cBoxCity_SelectionChanged;
-            txtNumber.Text = "";
-            txtStreet.Text = "";
-            cBoxCity.SelectedIndex = 0;
-            txtNumber.TextChanged += txtNumber_TextChanged;
-            txtStreet.TextChanged += txtStreet_TextChanged;
-            cBoxCity.SelectionChanged += cBoxCity_SelectionChanged;
+        //    txtNumber.TextChanged -= txtNumber_TextChanged;
+        //    txtStreet.TextChanged -= txtStreet_TextChanged;
+        //    cBoxCity.SelectionChanged -= cBoxCity_SelectionChanged;
+        //    txtNumber.Text = "";
+        //    txtStreet.Text = "";
+        //    cBoxCity.SelectedIndex = 0;
+        //    txtNumber.TextChanged += txtNumber_TextChanged;
+        //    txtStreet.TextChanged += txtStreet_TextChanged;
+        //    cBoxCity.SelectionChanged += cBoxCity_SelectionChanged;
 
-            txtTaxlot.Text = "";
-            cBoxTownship.SelectedItem = null;
-            cBoxRange.SelectedItem = null;
-            cBoxSection.SelectedItem = null;
-            cBoxQtrSec.SelectedItem = null;
-            cBoxQtrQtrSec.SelectedItem = null;
-        }
+        //    txtTaxlot.Text = "";
+        //    cBoxTownship.SelectedItem = null;
+        //    cBoxRange.SelectedItem = null;
+        //    cBoxSection.SelectedItem = null;
+        //    cBoxQtrSec.SelectedItem = null;
+        //    cBoxQtrQtrSec.SelectedItem = null;
+        //}
 
-        private void ClearAndZoomFull()
-        {
-            // clear all map selections
-            var featLayer = MapView.Active.Map.FindLayers(cBoxLayer.Text).FirstOrDefault() as FeatureLayer;
-            if (featLayer != null)
-            {
-                _ = QueuedTask.Run(() =>
-                {
-                    MapView.Active.Map.SetSelection(null);
-                    MapView.Active.ZoomTo(featLayer);
-                });
-            }
-            else { _ = QueuedTask.Run(() => MapView.Active.Map.SetSelection(null)); }
-        }
+        //private void ClearAndZoomFull()
+        //{
+        //    // clear all map selections
+        //    var featLayer = MapView.Active.Map.FindLayers(cBoxLayer.Text).FirstOrDefault() as FeatureLayer;
+        //    if (featLayer != null)
+        //    {
+        //        _ = QueuedTask.Run(() =>
+        //        {
+        //            MapView.Active.Map.SetSelection(null);
+        //            MapView.Active.ZoomTo(featLayer);
+        //        });
+        //    }
+        //    else { _ = QueuedTask.Run(() => MapView.Active.Map.SetSelection(null)); }
+        //}
 
         private void SwitchSelectedMapLayer()
         {
@@ -496,97 +496,97 @@ namespace Taxlot_Search
                 cBoxLayer.SelectedIndex = 0;
         }
 
-        private void setMapAndPINText()
-        {
-            string MAPtxt = "";
-            string PINtxt = "";
-            string township = "";
-            string range = "";
+        //private void setMapAndPINText()
+        //{
+        //    string MAPtxt = "";
+        //    string PINtxt = "";
+        //    string township = "";
+        //    string range = "";
 
-            if (cBoxTownship.SelectedValue != null)
-                township = cBoxTownship.SelectedValue.ToString();
-            if (cBoxRange.SelectedValue != null)
-                range = cBoxRange.SelectedValue.ToString();
+        //    if (cBoxTownship.SelectedValue != null)
+        //        township = cBoxTownship.SelectedValue.ToString();
+        //    if (cBoxRange.SelectedValue != null)
+        //        range = cBoxRange.SelectedValue.ToString();
 
-            MAPtxt = township + range;
-            if (cBoxSection.SelectedValue != null)
-            {
-                if (cBoxSection.SelectedValue.ToString().Length < 2)
-                {
-                    MAPtxt += "0" + cBoxSection.SelectedValue.ToString();
-                }
-                else
-                {
-                    MAPtxt += cBoxSection.SelectedValue.ToString();
-                }
-            }
+        //    MAPtxt = township + range;
+        //    if (cBoxSection.SelectedValue != null)
+        //    {
+        //        if (cBoxSection.SelectedValue.ToString().Length < 2)
+        //        {
+        //            MAPtxt += "0" + cBoxSection.SelectedValue.ToString();
+        //        }
+        //        else
+        //        {
+        //            MAPtxt += cBoxSection.SelectedValue.ToString();
+        //        }
+        //    }
 
-            PINtxt = MAPtxt;
+        //    PINtxt = MAPtxt;
 
-            if (cBoxQtrSec.SelectedValue != null)
-                if (cBoxQtrSec.SelectedValue.ToString() != " ")
-                    MAPtxt += cBoxQtrSec.SelectedValue.ToString();
+        //    if (cBoxQtrSec.SelectedValue != null)
+        //        if (cBoxQtrSec.SelectedValue.ToString() != " ")
+        //            MAPtxt += cBoxQtrSec.SelectedValue.ToString();
 
-            if (cBoxQtrQtrSec.SelectedValue != null)
-                if (cBoxQtrQtrSec.SelectedValue.ToString() != " ")
-                    MAPtxt += cBoxQtrQtrSec.SelectedValue.ToString();
+        //    if (cBoxQtrQtrSec.SelectedValue != null)
+        //        if (cBoxQtrQtrSec.SelectedValue.ToString() != " ")
+        //            MAPtxt += cBoxQtrQtrSec.SelectedValue.ToString();
 
-            txtTaxlotMap.Text = MAPtxt;
+        //    txtTaxlotMap.Text = MAPtxt;
 
-            // calculate PIN
-            if (cBoxQtrSec.SelectedValue is null)
-                PINtxt += " ";
-            else
-                PINtxt += cBoxQtrSec.SelectedValue.ToString();
+        //    // calculate PIN
+        //    if (cBoxQtrSec.SelectedValue is null)
+        //        PINtxt += " ";
+        //    else
+        //        PINtxt += cBoxQtrSec.SelectedValue.ToString();
 
-            if (cBoxQtrQtrSec.SelectedValue is null)
-                PINtxt += " ";
-            else
-                PINtxt += cBoxQtrQtrSec.SelectedValue.ToString();
+        //    if (cBoxQtrQtrSec.SelectedValue is null)
+        //        PINtxt += " ";
+        //    else
+        //        PINtxt += cBoxQtrQtrSec.SelectedValue.ToString();
 
-            if (txtTaxlot.Text != null)
-                PINtxt += txtTaxlot.Text.PadLeft(5, '0');
+        //    if (txtTaxlot.Text != null)
+        //        PINtxt += txtTaxlot.Text.PadLeft(5, '0');
 
-            txtTaxlotPIN.Text = PINtxt;
-        }
+        //    txtTaxlotPIN.Text = PINtxt;
+        //}
 
-        private void cBoxTownship_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            setMapAndPINText();
-        }
+        //private void cBoxTownship_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    setMapAndPINText();
+        //}
 
-        private void cBoxRange_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            setMapAndPINText();
-        }
+        //private void cBoxRange_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    setMapAndPINText();
+        //}
 
-        private void cBoxSection_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            setMapAndPINText();
-        }
+        //private void cBoxSection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    setMapAndPINText();
+        //}
 
-        private void cBoxQtrSec_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            setMapAndPINText();
-        }
+        //private void cBoxQtrSec_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    setMapAndPINText();
+        //}
 
-        private void cBoxQtrQtrSec_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            setMapAndPINText();
-        }
+        //private void cBoxQtrQtrSec_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    setMapAndPINText();
+        //}
 
-        private void txtTaxlot_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int number;
-            bool success = Int32.TryParse(txtTaxlot.Text, out number);
+    //    private void txtTaxlot_TextChanged(object sender, TextChangedEventArgs e)
+    //    {
+    //        int number;
+    //        bool success = Int32.TryParse(txtTaxlot.Text, out number);
 
-            if (txtTaxlot.Text != "")
-            {
-                if (success)
-                    setMapAndPINText();
-                else { MessageBox.Show("Enter a valid number into the Taxlot number box.", "Taxlot/Address Search Alert"); }
-            }
-        }
+    //        if (txtTaxlot.Text != "")
+    //        {
+    //            if (success)
+    //                setMapAndPINText();
+    //            else { MessageBox.Show("Enter a valid number into the Taxlot number box.", "Taxlot/Address Search Alert"); }
+    //        }
+    //    }
     }
 }
 

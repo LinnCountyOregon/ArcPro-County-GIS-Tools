@@ -33,12 +33,26 @@ namespace Taxlot_Search
         public static List<string> allowedTaxlotNames = new List<string> { "taxlots", "tax lots" };
         public static List<string> allowedAddressNames = new List<string> { "address" };
         Map _activeMap;
+        private ICommand _clearSearchListCmd;
+        private ICommand _searchMapCmd;
+        private ICommand _searchPINCmd;
+        private ICommand _searchAssessorNumCmd;
 
         protected TaxlotSearchDockpaneViewModel()
         {
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_layers, _lock);
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_propertyInfoList, _lock);
-            
+            System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_cBoxTownship, _lock);
+            System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_cBoxRange, _lock);
+            System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_cBoxSection, _lock);
+            System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_cBoxQtrSec, _lock);
+            System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_cBoxQtrQtrSec, _lock);
+
+            _clearSearchListCmd = new RelayCommand(() => ClearSearchList(), () => true);
+            _searchMapCmd = new RelayCommand(() => SearchMap(), () => true);
+            _searchPINCmd = new RelayCommand(() => SearchPin(), () => true);
+            _searchAssessorNumCmd = new RelayCommand(() => SearchAssessorNum(), () => true);
+
             LayersAddedEvent.Subscribe(OnLayersAdded);
             LayersRemovedEvent.Subscribe(OnLayersRemoved);
             //ActiveToolChangedEvent.Subscribe(OnActiveToolChanged);
@@ -61,6 +75,8 @@ namespace Taxlot_Search
         /// </summary>
         protected override Task InitializeAsync()
         {
+            initilizeCBoxValues();
+
             if (MapView.Active == null)
                 return Task.FromResult(0);
 
@@ -112,31 +128,127 @@ namespace Taxlot_Search
             set { SetProperty(ref _propertyInfoList, value); }
         }
 
-        //private AddressItems _selectedAddress;
-        //public AddressItems SelectedAddress
-        //{
-        //    get { return _selectedAddress; }
-        //    set { SetProperty(ref _selectedAddress, value); }
-        //}
-
-        private bool _hasError = false;
-        public bool HasError
+        private ObservableCollection<string> _cBoxTownship = new ObservableCollection<string>();
+        public ObservableCollection<string> CBoxTownship
         {
-            get { return _hasError; }
+            get { return _cBoxTownship; }
+        }
+
+        private string _selCBoxTownship;
+        public string SelCBoxTownship
+        {
+            get { return _selCBoxTownship; }
             set
             {
-                SetProperty(ref _hasError, value, () => HasError);
+                SetProperty(ref _selCBoxTownship, value, () => SelCBoxTownship);
+                setMapAndPINText();
             }
         }
 
-        private bool _isValid = false;
-        public bool IsValid
+        private ObservableCollection<string> _cBoxRange = new ObservableCollection<string>();
+        public ObservableCollection<string> CBoxRange
         {
-            get { return _isValid; }
+            get { return _cBoxRange; }
+        }
+
+        private string _selCBoxRange;
+        public string SelCBoxRange
+        {
+            get { return _selCBoxRange; }
             set
             {
-                SetProperty(ref _isValid, value, () => IsValid);
+                SetProperty(ref _selCBoxRange, value, () => SelCBoxRange);
+                setMapAndPINText();
             }
+        }
+
+        private ObservableCollection<string> _cBoxSection = new ObservableCollection<string>();
+        public ObservableCollection<string> CBoxSection
+        {
+            get { return _cBoxSection; }
+        }
+
+        private string _selCBoxSection;
+        public string SelCBoxSection
+        {
+            get { return _selCBoxSection; }
+            set
+            {
+                SetProperty(ref _selCBoxSection, value, () => SelCBoxSection);
+                setMapAndPINText();
+            }
+        }
+
+        private ObservableCollection<string> _cBoxQtrSec = new ObservableCollection<string>();
+        public ObservableCollection<string> CBoxQtrSec
+        {
+            get { return _cBoxQtrSec; }
+        }
+
+        private string _selCBoxQtrSec;
+        public string SelCBoxQtrSec
+        {
+            get { return _selCBoxQtrSec; }
+            set
+            {
+                SetProperty(ref _selCBoxQtrSec, value, () => SelCBoxQtrSec);
+                setMapAndPINText();
+            }
+        }
+
+        private ObservableCollection<string> _cBoxQtrQtrSec = new ObservableCollection<string>();
+        public ObservableCollection<string> CBoxQtrQtrSec
+        {
+            get { return _cBoxQtrQtrSec; }
+        }
+
+        private string _selCBoxQtrQtrSec;
+        public string SelCBoxQtrQtrSec
+        {
+            get { return _selCBoxQtrQtrSec; }
+            set
+            {
+                SetProperty(ref _selCBoxQtrQtrSec, value, () => SelCBoxQtrQtrSec);
+                setMapAndPINText();
+            }
+        }
+
+        private string _txtTaxlot;
+        public string TxtTaxlot
+        {
+            get { return _txtTaxlot; }
+            set
+            {
+                SetProperty(ref _txtTaxlot, value, () => TxtTaxlot);
+                bool success = Int32.TryParse(TxtTaxlot, out int number);
+                if (TxtTaxlot != "")
+                {
+                    if (success)
+                        setMapAndPINText();
+                    else { MessageBox.Show("Enter a valid number into the Taxlot number box.", "Taxlot/Address Search Alert"); }
+                }
+            }
+        }
+
+        private string _txtTaxlotMap;
+        public string TxtTaxlotMap
+        {
+            get { return _txtTaxlotMap; }
+            set { SetProperty(ref _txtTaxlotMap, value, () => TxtTaxlotMap); }
+        }
+
+        private string _txtTaxlotPIN;
+        public string TxtTaxlotPIN
+        {
+            get { return _txtTaxlotPIN; }
+            set { SetProperty(ref _txtTaxlotPIN, value, () => TxtTaxlotPIN); }
+        }
+
+        private string _txtAssessorNum;
+        public string TxtAssessorNum
+        {
+            get { return _txtAssessorNum; }
+            set { SetProperty(ref _txtAssessorNum, value, () => TxtAssessorNum); }
         }
 
         #endregion
@@ -208,6 +320,240 @@ namespace Taxlot_Search
                 }
             }
         }
+
+        private void initilizeCBoxValues()
+        {
+            _cBoxTownship.Clear();
+            _selCBoxTownship = null;
+            foreach (string value in new List<string> { "09S", "10S", "11S", "12S", "13S", "14S", "15S", "16S" })
+                CBoxTownship.Add(value);
+
+            _cBoxRange.Clear();
+            _selCBoxRange = null;
+            foreach (string value in new List<string> { "05W", "04W", "03W", "02W", "01W", "01E", "02E", "03E", "04E", "05E", "06E", "07E", "75E", "08E" })
+                CBoxRange.Add(value);
+
+            _cBoxSection.Clear();
+            _selCBoxSection = null;
+            foreach (int value in Enumerable.Range(0, 37))
+                CBoxSection.Add(value.ToString().PadLeft(2, '0'));
+
+            _cBoxQtrSec.Clear();
+            _selCBoxQtrSec = null;
+            _cBoxQtrQtrSec.Clear();
+            _selCBoxQtrQtrSec = null;
+            foreach (string value in new List<string> { " ", "A", "B", "C", "D" })
+            {
+                CBoxQtrSec.Add(value);
+                CBoxQtrQtrSec.Add(value);
+            }
+
+        }
+
+        private void ClearSearchList()
+        {
+            ClearAndZoomFull();
+
+            //txtNumber.TextChanged -= txtNumber_TextChanged;
+            //txtStreet.TextChanged -= txtStreet_TextChanged;
+            //cBoxCity.SelectionChanged -= cBoxCity_SelectionChanged;
+            //txtNumber.Text = "";
+            //txtStreet.Text = "";
+            //cBoxCity.SelectedIndex = 0;
+            //txtNumber.TextChanged += txtNumber_TextChanged;
+            //txtStreet.TextChanged += txtStreet_TextChanged;
+            //cBoxCity.SelectionChanged += cBoxCity_SelectionChanged;
+
+            TxtTaxlot = "";
+            SelCBoxTownship = null;
+            SelCBoxRange = null;
+            SelCBoxSection = null;
+            SelCBoxQtrSec = null;
+            SelCBoxQtrQtrSec = null;
+            TxtTaxlotMap = "";
+            TxtTaxlotPIN = "";
+            TxtAssessorNum = "";
+        }
+
+        private void ClearAndZoomFull()
+        {
+            // clear all map selections
+            if (SelectedLayer != null)
+            {
+                QueuedTask.Run(() =>
+                {
+                    MapView.Active.Map.ClearSelection();
+                    MapView.Active.ZoomTo(SelectedLayer);
+                });
+            }
+            else { QueuedTask.Run(() => MapView.Active.Map.ClearSelection()); }
+        }
+
+        private void setMapAndPINText()
+        {
+            string township = "";
+            string range = "";
+            string section = "";
+
+            if (SelCBoxTownship != null)
+                township = SelCBoxTownship;
+            if (SelCBoxRange != null)
+                range = SelCBoxRange;
+            if (SelCBoxSection != null)
+                section = SelCBoxSection;
+            else
+                section = "00";
+
+            string MAPtxt = township + range + section;
+            string PINtxt = MAPtxt;
+
+            if (SelCBoxQtrSec != null)
+                if (SelCBoxQtrSec != " ")
+                    MAPtxt += SelCBoxQtrSec;
+
+            if (SelCBoxQtrQtrSec != null)
+                if (SelCBoxQtrQtrSec != " ")
+                    MAPtxt += SelCBoxQtrQtrSec;
+
+            TxtTaxlotMap = MAPtxt;
+
+            // calculate PIN
+            if (SelCBoxQtrSec is null)
+                PINtxt += " ";
+            else
+                PINtxt += SelCBoxQtrSec;
+
+            if (SelCBoxQtrQtrSec is null)
+                PINtxt += " ";
+            else
+                PINtxt += SelCBoxQtrQtrSec;
+
+            if (TxtTaxlot != null && TxtTaxlot != "")
+                PINtxt += TxtTaxlot.PadLeft(5, '0');
+
+            TxtTaxlotPIN = PINtxt;
+        }
+
+        private async void SearchMap()
+        {
+            if (SelectedLayer != null)
+            {
+                if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()) || allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+                {
+                    if (TxtTaxlotMap.Length > 10)
+                        await selectTaxlotAddress(TxtTaxlotMap.Substring(0, 10));
+                    else
+                        await selectTaxlotAddress(TxtTaxlotMap);
+                }
+                else { MessageBox.Show("To search on taxlot MAP, the Linn County taxlot or address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
+            }
+            else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }
+        }
+
+        private async void SearchPin()
+        {
+            if (SelectedLayer != null)
+            {
+                if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()) || allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+                    await selectTaxlotAddress(TxtTaxlotPIN);
+                else { MessageBox.Show("To search on taxlot PIN, the Linn County taxlot or address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
+            }
+            else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }
+        }
+
+        private async void SearchAssessorNum()
+        {
+            if (!allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+                MessageBox.Show("Wrong layer!");
+
+            if (SelectedLayer != null)
+            {
+                if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+                {
+                    if (validateNumber(TxtAssessorNum))
+                    {
+                        int assessorNum;
+                        bool success = Int32.TryParse(TxtAssessorNum, out assessorNum);
+                        await selectTaxlotAddress("", assessorNum);
+                    }
+                    else { MessageBox.Show("Enter a valid number into the Assessor number box.", "Taxlot/Address Search Alert"); }
+                }
+                else { MessageBox.Show("To search on Assessor number, the Linn County taxlot layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
+            }
+            else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }
+        }
+
+        private bool validateNumber(string numberText)
+        {
+            int number;
+            bool success = Int32.TryParse(numberText, out number);
+            if (success && number > 0)
+                return true;
+            else
+                return false;
+        }
+
+        private async Task selectTaxlotAddress(string mapPIN, int AssessorNum = 0)
+        {
+            //var featLayer = MapView.Active.Map.FindLayers(cBoxLayer.Text).FirstOrDefault() as FeatureLayer;
+            if (SelectedLayer != null)
+            {
+                string runMode;
+                if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+                    runMode = "taxlots";
+                else if (allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+                    runMode = "address";
+                else
+                    runMode = "(Not Found)";
+
+                Selection featSelection = await QueuedTask.Run<Selection>(() =>
+                {
+                    // clear all map selections
+                    MapView.Active.Map.SetSelection(null);
+
+                    // create query filter for selection
+                    QueryFilter queryFilter = new QueryFilter();
+
+                    if (AssessorNum > 0)
+                    {
+                        if (runMode == "taxlots")
+                            queryFilter.WhereClause = "ACTNUM = " + AssessorNum.ToString();
+                        else if (runMode == "address")
+                            queryFilter.WhereClause = "ACT_NUM = " + AssessorNum.ToString();
+                    }
+                    else if (mapPIN.Length == 15)
+                    {
+                        if (runMode == "taxlots")
+                            queryFilter.WhereClause = "PIN = '" + mapPIN + "'";
+                        else if (runMode == "address")
+                            queryFilter.WhereClause = "MAP_PIN = '" + mapPIN + "'";
+                    }
+                    else
+                    {
+                        if (runMode == "taxlots")
+                            queryFilter.WhereClause = "MAP = '" + mapPIN + "'";
+                        else if (runMode == "address")
+                            queryFilter.WhereClause = "MAP_NUM = '" + mapPIN + "'";
+                    }
+
+                    Selection resultSel = SelectedLayer.Select(queryFilter, SelectionCombinationMethod.New);
+
+                    if (resultSel.GetCount() == 0)
+                        if (AssessorNum > 0)
+                            MessageBox.Show("Assessor Number: " + AssessorNum.ToString() + " not found on layer: " + SelectedLayer.Name.ToUpper(), "Taxlot/Address Search Alert");
+                        else
+                            MessageBox.Show("Map/PIN: " + mapPIN + " not found on layer: " + SelectedLayer.Name.ToUpper(), "Taxlot/Address Search Alert");
+                    else
+                    {
+                        MapView.Active.ZoomToSelected();
+                        MapView.Active.ZoomOutFixed();
+                    }
+
+                    return resultSel;
+                });
+            }
+        }
+
 
         #endregion
 
@@ -361,6 +707,14 @@ namespace Taxlot_Search
                 SetProperty(ref _heading, value, () => Heading);
             }
         }
+
+        #region Commands
+        public ICommand ClearSearchListCmd => _clearSearchListCmd;
+        public ICommand SearchMapCmd => _searchMapCmd;
+        public ICommand SearchPINCmd => _searchPINCmd;
+        public ICommand SearchAssessorNumCmd => _searchAssessorNumCmd;
+
+        #endregion
     }
 
     public class PropertyIntoItems : DockPane
@@ -386,118 +740,6 @@ namespace Taxlot_Search
             LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "taxlots");
             LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Address");
         }
-
-        //private async void AddNewMap(string mapName)
-        //{
-        //    IMapPane createMapResult = await QueuedTask.Run<IMapPane>(() =>
-        //    {
-        //        var map = MapFactory.Instance.CreateMap(mapName, basemap: Basemap.ProjectDefault);
-        //        return ProApp.Panes.CreateMapPaneAsync(map);
-        //        //return map;
-        //    });
-        //    // Execution automatically resumes here when the Task above completes!
-        //    LoadShapefileToLayer("C:\\GIS\\shapefiles", "taxlots");
-        //    LoadShapefileToLayer("C:\\GIS\\shapefiles", "Address");
-        //}
-
-        //public static async void FindOpenExistingMapAsync(string mapName)
-        //{
-        //    Map openNewMap = await QueuedTask.Run<Map>(async () =>
-        //    {
-        //        Map map = null;
-        //        Project proj = Project.Current;
-
-        //        //Finding the first project item with name matches with mapName
-        //        MapProjectItem mpi =
-        //            proj.GetItems<MapProjectItem>()
-        //                .FirstOrDefault(m => m.Name.Equals(mapName, StringComparison.CurrentCultureIgnoreCase));
-        //        if (mpi != null)
-        //        {
-        //            map = mpi.GetMap();
-        //            //Opening the map in a mapview
-        //            await ProApp.Panes.CreateMapPaneAsync(map);
-        //        }
-        //        return map;
-        //    });
-        //}
-
-        //private async void LoadShapefileToLayer(string pathToShp, string shpName)
-        //{
-        //    FeatureLayer loadedLayer = await QueuedTask.Run<FeatureLayer>(() =>
-        //    {            
-        //        try
-        //        {
-        //            // open shapefile to map layer
-        //            System.Uri uriPath = new System.Uri(pathToShp + "\\" + shpName + ".shp"); 
-        //            FeatureLayer shp_layer = LayerFactory.Instance.CreateFeatureLayer(uriPath, MapView.Active.Map, layerName: shpName);
-
-        //            symbolizeBaseLayers(shpName, shp_layer);
-
-        //            return MapView.Active.GetSelectedLayers()[0] as FeatureLayer;
-        //        }
-        //        catch
-        //        {
-        //            MessageBox.Show("Load data layer failed for: " + shpName + " attempting to load layer from the LinnPublication SDE");
-        //            return null;
-        //        }
-
-        //        //var uriPath = new Uri(pathToShp);
-        //        //var FSpath = new FileSystemConnectionPath(uriPath, FileSystemDatastoreType.Shapefile);
-        //        //using (var shapefileFolder = new FileSystemDatastore(FSpath))
-        //        //{
-        //        //    FeatureClass taxLotsFeatureClass = shapefileFolder.OpenDataset<FeatureClass>(shpName);
-        //        //    int nCount = taxLotsFeatureClass.GetCount();
-        //        //    MessageBox.Show(String.Format("Feature count: {0}", nCount.ToString()));
-
-        //        //}
-        //    });
-
-        //    if (loadedLayer == null)
-        //    {
-        //        await QueuedTask.Run(() =>
-        //        {
-        //            try
-        //            {
-        //                using (Geodatabase linnPublicationSDE = new Geodatabase(new DatabaseConnectionFile(new Uri(@"\\lc-gis\data\linn_geodatabase\Publication\Connection to lc-sql2016.sde"))))
-        //                {
-        //                    FeatureClass fcSDE = linnPublicationSDE.OpenDataset<FeatureClass>(shpName);
-        //                    FeatureLayer SDElayer = LayerFactory.Instance.CreateFeatureLayer(fcSDE, MapView.Active.Map, layerName: shpName) as FeatureLayer;
-
-        //                    // load taxlots off the Portal - Note, this is very slow to load
-        //                    // var by_ref_id = @"https://gis.co.linn.or.us/public/rest/services/baselayers/Pub_taxlots/MapServer/0";
-        //                    //FeatureLayer portalLayer = LayerFactory.Instance.CreateLayer(new Uri(by_ref_id, UriKind.Absolute), MapView.Active.Map, layerName: shpName) as FeatureLayer;
-
-        //                    symbolizeBaseLayers(shpName, SDElayer);
-        //                }
-        //            }
-        //            catch
-        //            {
-        //                MessageBox.Show("Load data from SDE failed for: " + shpName);
-        //            }
-
-        //        });
-        //    }
-        //}
-
-        //private void symbolizeBaseLayers(string layerName, FeatureLayer layerToSymbolize)
-        //{
-        //    if (layerName == "taxlots")
-        //    {
-        //        QueuedTask.Run(() =>
-        //        {
-        //            CIMPolygonSymbol polySymbol = SymbolFactory.Instance.ConstructPolygonSymbol();
-        //            polySymbol.SetOutlineColor(CIMColor.CreateRGBColor(156, 156, 156));
-        //            polySymbol.SetColor(CIMColor.NoColor());
-        //            polySymbol.SetSize(0.8);
-
-        //            //Define the renderer object and use the symbol object to set the symbol reference of the current renderer
-        //            SimpleRendererDefinition rendDef = new SimpleRendererDefinition();
-        //            rendDef.SymbolTemplate = polySymbol.MakeSymbolReference();
-        //            //Set the current renderer to the target layer
-        //            layerToSymbolize.SetRenderer(layerToSymbolize.CreateRenderer(rendDef));
-        //        });
-        //    }
-        //}
 
     }
 }

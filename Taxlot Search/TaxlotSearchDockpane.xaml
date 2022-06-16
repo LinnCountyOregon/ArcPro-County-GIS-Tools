@@ -6,7 +6,7 @@
              xmlns:ui="clr-namespace:Taxlot_Search"
              xmlns:extensions="clr-namespace:ArcGIS.Desktop.Extensions;assembly=ArcGIS.Desktop.Extensions"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="300"
+             d:DesignHeight="680" d:DesignWidth="300"
              d:DataContext="{Binding Path=Taxlot_Search.TaxlotSearchDockpaneViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -40,16 +40,16 @@
                 <Label Grid.Column="0" Grid.Row="0" Foreground="#FF8D8D8D">Township</Label>
                 <Label Grid.Column="1" Grid.Row="0" Foreground="#FF8D8D8D">Range</Label>
                 <Label Grid.Column="2" Grid.Row="0" Foreground="#FF8D8D8D">Section</Label>
-                <ComboBox x:Name="cBoxTownship" Grid.Column="0" Grid.Row="1" Margin="3,0,3,0" SelectionChanged="cBoxTownship_SelectionChanged" />
-                <ComboBox x:Name="cBoxRange" Grid.Column="1" Grid.Row="1" Margin="3,0,3,0" SelectionChanged="cBoxRange_SelectionChanged" />
-                <ComboBox x:Name="cBoxSection" Grid.Column="2" Grid.Row="1" Margin="3,0,3,0" SelectionChanged="cBoxSection_SelectionChanged" />
+                <ComboBox x:Name="cBoxTownship" Grid.Column="0" Grid.Row="1" Margin="3,0,3,0" ItemsSource="{Binding CBoxTownship}" SelectedItem="{Binding SelCBoxTownship, Mode=TwoWay}" />
+                <ComboBox x:Name="cBoxRange" Grid.Column="1" Grid.Row="1" Margin="3,0,3,0" ItemsSource="{Binding CBoxRange}" SelectedItem="{Binding SelCBoxRange, Mode=TwoWay}" />
+                <ComboBox x:Name="cBoxSection" Grid.Column="2" Grid.Row="1" Margin="3,0,3,0" ItemsSource="{Binding CBoxSection}" SelectedItem="{Binding SelCBoxSection, Mode=TwoWay}" />
 
                 <Label Grid.Column="0" Grid.Row="2" Margin="0,5,0,0" Foreground="#FF8D8D8D">Qtr Section</Label>
                 <Label Grid.Column="1" Grid.Row="2" Margin="0,5,0,0" Foreground="#FF8D8D8D">Qtr-Qtr Section</Label>
                 <Label Grid.Column="2" Grid.Row="2" Margin="0,5,0,0" Foreground="#FF8D8D8D">Taxlot</Label>
-                <ComboBox x:Name="cBoxQtrSec" Grid.Column="0" Grid.Row="3" Margin="3,0,3,0" SelectionChanged="cBoxQtrSec_SelectionChanged" />
-                <ComboBox x:Name="cBoxQtrQtrSec" Grid.Column="1" Grid.Row="3" Margin="3,0,3,0" SelectionChanged="cBoxQtrQtrSec_SelectionChanged" />
-                <TextBox x:Name="txtTaxlot" Grid.Column="2" Grid.Row="3" Margin="3,0,3,0" TextChanged="txtTaxlot_TextChanged" />
+                <ComboBox x:Name="cBoxQtrSec" Grid.Column="0" Grid.Row="3" Margin="3,0,3,0" ItemsSource="{Binding CBoxQtrSec}" SelectedItem="{Binding SelCBoxQtrSec, Mode=TwoWay}" />
+                <ComboBox x:Name="cBoxQtrQtrSec" Grid.Column="1" Grid.Row="3" Margin="3,0,3,0" ItemsSource="{Binding CBoxQtrQtrSec}" SelectedItem="{Binding SelCBoxQtrQtrSec, Mode=TwoWay}" />
+                <TextBox x:Name="txtTaxlot" Grid.Column="2" Grid.Row="3" Margin="3,0,3,0" Text="{Binding TxtTaxlot}" />
 
                 <!--<Button x:Name="btnSearchMap" Grid.Column="1" Grid.Row="4" Margin="0,10,0,5" Height="25" Click="btnSearchMap_Click">Search Map</Button>
                 <Button x:Name="btnSearchPIN" Grid.Column="0" Grid.Row="4" Margin="0,10,0,5" Height="25" Click="btnSearchPIN_Click">Search PIN</Button>-->
@@ -67,11 +67,11 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Margin="0,0,0,-5" Foreground="#FF8D8D8D">Taxlot Map</Label>
-                <TextBox x:Name="txtTaxlotMap" Grid.Row="1" Grid.Column="0" Height="20" VerticalAlignment="Bottom" />
-                <Button x:Name="btnSearchMap" Grid.Row="1" Grid.Column="1" Margin="3,0,3,0" Height="25" Click="btnSearchMap_Click">Search Taxlot Map</Button>
+                <TextBox x:Name="txtTaxlotMap" Grid.Row="1" Grid.Column="0" Height="20" VerticalAlignment="Bottom" Text="{Binding TxtTaxlotMap}" />
+                <Button x:Name="btnSearchMap" Grid.Row="1" Grid.Column="1" Margin="3,0,3,0" Height="25" Command="{Binding SearchMapCmd}" Content="Search Taxlot Map" />
                 <Label Grid.Row="2" Grid.Column="0" Margin="0,0,0,-5" Foreground="#FF8D8D8D">Taxlot PIN</Label>
-                <TextBox x:Name="txtTaxlotPIN" Grid.Row="3" Grid.Column="0" Margin="0,0,0,5" Height="20" VerticalAlignment="Bottom" />
-                <Button x:Name="btnSearchPIN" Grid.Row="3" Grid.Column="1" Margin="3,0,3,5" Height="25" Click="btnSearchPIN_Click">Search Taxlot PIN</Button>
+                <TextBox x:Name="txtTaxlotPIN" Grid.Row="3" Grid.Column="0" Margin="0,0,0,5" Height="20" VerticalAlignment="Bottom" Text="{Binding TxtTaxlotPIN}" />
+                <Button x:Name="btnSearchPIN" Grid.Row="3" Grid.Column="1" Margin="3,0,3,5" Height="25" Command="{Binding SearchPINCmd}" Content="Search Taxlot PIN" />
             </Grid>
 
             <Separator/>
@@ -83,15 +83,16 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="7*" />
+                    <ColumnDefinition Width="134*"/>
+                    <ColumnDefinition Width="141*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Margin="0,0,0,-5" Foreground="#FF8D8D8D">Assessor Number</Label>
-                <TextBox x:Name="txtAssessorNum" Grid.Row="1" Grid.Column="0" Height="20" VerticalAlignment="Bottom" />
-                <Button x:Name="btnSearchAssessorNum" Grid.Row="1" Grid.Column="1" Margin="3,0,3,0" Height="25" Click="btnSearchAssessorNum_Click">Search Assessor Num</Button>
-                <Label Grid.Row="2" Grid.Column="0" Margin="0,0,0,-5" Foreground="#FF8D8D8D">Owner Last Name</Label>
-                <TextBox x:Name="txtOwnerLastName" Grid.Row="3" Grid.Column="0" Margin="0,0,0,5" Height="20" VerticalAlignment="Bottom" />
-                <Button x:Name="btnSearchOwner" Grid.Row="3" Grid.Column="1" Margin="3,0,3,5" Height="25" Click="btnSearchOwner_Click">Search Owner Name</Button>
+                <Label Grid.Row="0" Grid.Column="0" Margin="0,0,0,20" Foreground="#FF8D8D8D" Grid.ColumnSpan="2" Grid.RowSpan="2">Assessor Number</Label>
+                <TextBox x:Name="txtAssessorNum" Grid.Row="1" Grid.Column="0" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Text="{Binding TxtAssessorNum}" />
+                <Button x:Name="btnSearchAssessorNum" Grid.Row="1" Grid.Column="2" Margin="3,0,3,0" Height="25" Command="{Binding SearchAssessorNumCmd}" Content="Search Assessor Num" />
+                <Label Grid.Row="2" Grid.Column="0" Margin="0,0,0,25" Foreground="#FF8D8D8D" Grid.ColumnSpan="2" Grid.RowSpan="2">Owner Last Name</Label>
+                <TextBox x:Name="txtOwnerLastName" Grid.Row="3" Grid.Column="0" Margin="0,0,0,5" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="2" />
+                <Button x:Name="btnSearchOwner" Grid.Row="3" Grid.Column="2" Margin="3,0,3,5" Height="25" Click="btnSearchOwner_Click">Search Owner Name</Button>
             </Grid>
             <Separator/>
             <Label Foreground="#FF8D8D8D">Search by Address</Label>
@@ -114,7 +115,7 @@
             </Grid>
             <ListBox x:Name="lBoxPropertyInfo" Margin="0,5,0,5" MinHeight="50" Height="144" Foreground="#FF8D8D8D" ItemsSource="{Binding PropertyInfoList}" DisplayMemberPath="Name" SelectedValuePath="Name" SelectionChanged="lBoxPropertyInfo_SelectionChanged" />
             <Label Foreground="#FFFF8F5B" Panel.ZIndex="-4" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,-10,0,0">Only the first 500 results are shown here</Label>
-            <Button x:Name="btnClearSearchList" Margin="0,5,0,5" Height="25" Click="btnClearSearchList_Click">Clear Search Results</Button>
+            <Button x:Name="btnClearSearchList" Margin="0,5,0,5" Height="25" Command="{Binding ClearSearchListCmd}" Content="Clear Search Results" />
         </StackPanel>
     </DockPanel>
 </UserControl>
