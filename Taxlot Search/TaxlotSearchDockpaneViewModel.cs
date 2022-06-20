@@ -37,6 +37,9 @@ namespace Taxlot_Search
         private ICommand _searchMapCmd;
         private ICommand _searchPINCmd;
         private ICommand _searchAssessorNumCmd;
+        private ICommand _searchOwnerCmd;
+        private ICommand _searchAddressCmd;
+        private bool clearUIselections = false;
 
         protected TaxlotSearchDockpaneViewModel()
         {
@@ -47,11 +50,14 @@ namespace Taxlot_Search
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_cBoxSection, _lock);
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_cBoxQtrSec, _lock);
             System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_cBoxQtrQtrSec, _lock);
+            System.Windows.Data.BindingOperations.EnableCollectionSynchronization(_cBoxCity, _lock);
 
             _clearSearchListCmd = new RelayCommand(() => ClearSearchList(), () => true);
             _searchMapCmd = new RelayCommand(() => SearchMap(), () => true);
             _searchPINCmd = new RelayCommand(() => SearchPin(), () => true);
             _searchAssessorNumCmd = new RelayCommand(() => SearchAssessorNum(), () => true);
+            _searchOwnerCmd = new RelayCommand(() => SearchOwner(), () => true);
+            _searchAddressCmd = new RelayCommand(() => ValidateSelectAddress(), () => true);
 
             LayersAddedEvent.Subscribe(OnLayersAdded);
             LayersRemovedEvent.Subscribe(OnLayersRemoved);
@@ -121,11 +127,22 @@ namespace Taxlot_Search
             }
         }
 
-        private ObservableCollection<PropertyIntoItems> _propertyInfoList = new ObservableCollection<PropertyIntoItems>();
-        public ObservableCollection<PropertyIntoItems> PropertyInfoList
+        private ObservableCollection<string> _propertyInfoList = new ObservableCollection<string>();
+        public ObservableCollection<string> PropertyInfoList
         {
             get { return _propertyInfoList; }
             set { SetProperty(ref _propertyInfoList, value); }
+        }
+
+        private string _selPropertyInfoList;
+        public string SelPropertyInfoList
+        {
+            get { return _selPropertyInfoList; }
+            set
+            {
+                SetProperty(ref _selPropertyInfoList, value, () => SelPropertyInfoList);
+                SelectPropertyInfo();
+            }
         }
 
         private ObservableCollection<string> _cBoxTownship = new ObservableCollection<string>();
@@ -213,6 +230,24 @@ namespace Taxlot_Search
             }
         }
 
+        private ObservableCollection<string> _cBoxCity = new ObservableCollection<string>();
+        public ObservableCollection<string> CBoxCity
+        {
+            get { return _cBoxCity; }
+        }
+
+        private string _selCBoxCity;
+        public string SelCBoxCity
+        {
+            get { return _selCBoxCity; }
+            set
+            {
+                SetProperty(ref _selCBoxCity, value, () => SelCBoxCity);
+                if (clearUIselections == false)
+                    ValidateSelectAddress();
+            }
+        }
+
         private string _txtTaxlot;
         public string TxtTaxlot
         {
@@ -249,6 +284,37 @@ namespace Taxlot_Search
         {
             get { return _txtAssessorNum; }
             set { SetProperty(ref _txtAssessorNum, value, () => TxtAssessorNum); }
+        }
+
+        private string _txtOwnerLastName;
+        public string TxtOwnerLastName
+        {
+            get { return _txtOwnerLastName; }
+            set { SetProperty(ref _txtOwnerLastName, value, () => TxtOwnerLastName); }
+        }
+
+        private string _txtNumber;
+        public string TxtNumber
+        {
+            get { return _txtNumber; }
+            set
+            {
+                SetProperty(ref _txtNumber, value, () => TxtNumber);
+                if (clearUIselections == false)
+                    ValidateSelectAddress();
+            }
+        }
+
+        private string _txtStreet;
+        public string TxtStreet
+        {
+            get { return _txtStreet; }
+            set
+            {
+                SetProperty(ref _txtStreet, value, () => TxtStreet);
+                if (clearUIselections == false)
+                    ValidateSelectAddress();
+            }
         }
 
         #endregion
@@ -324,45 +390,60 @@ namespace Taxlot_Search
         private void initilizeCBoxValues()
         {
             _cBoxTownship.Clear();
-            _selCBoxTownship = null;
             foreach (string value in new List<string> { "09S", "10S", "11S", "12S", "13S", "14S", "15S", "16S" })
                 CBoxTownship.Add(value);
 
             _cBoxRange.Clear();
-            _selCBoxRange = null;
             foreach (string value in new List<string> { "05W", "04W", "03W", "02W", "01W", "01E", "02E", "03E", "04E", "05E", "06E", "07E", "75E", "08E" })
                 CBoxRange.Add(value);
 
             _cBoxSection.Clear();
-            _selCBoxSection = null;
             foreach (int value in Enumerable.Range(0, 37))
                 CBoxSection.Add(value.ToString().PadLeft(2, '0'));
 
             _cBoxQtrSec.Clear();
-            _selCBoxQtrSec = null;
             _cBoxQtrQtrSec.Clear();
-            _selCBoxQtrQtrSec = null;
             foreach (string value in new List<string> { " ", "A", "B", "C", "D" })
             {
                 CBoxQtrSec.Add(value);
                 CBoxQtrQtrSec.Add(value);
             }
 
+            _cBoxCity.Clear();
+            CBoxCity.Add("Entire County");
+            CBoxCity.Add("Albany");
+            CBoxCity.Add("Brownsville");
+            CBoxCity.Add("Cascadia");
+            CBoxCity.Add("Corvallis");
+            CBoxCity.Add("Crabtree");
+            CBoxCity.Add("Crawfordsville");
+            CBoxCity.Add("Foster");
+            CBoxCity.Add("Halsey");
+            CBoxCity.Add("Harrisburg");
+            CBoxCity.Add("Idanha");
+            CBoxCity.Add("Jefferson");
+            CBoxCity.Add("Lacomb");
+            CBoxCity.Add("Lebanon");
+            CBoxCity.Add("Lyons");
+            CBoxCity.Add("McKenzie Bridge");
+            CBoxCity.Add("Mill City");
+            CBoxCity.Add("Millersburg");
+            CBoxCity.Add("Scio");
+            CBoxCity.Add("Shedd");
+            CBoxCity.Add("Sodaville");
+            CBoxCity.Add("Stayton");
+            CBoxCity.Add("Sweet Home");
+            CBoxCity.Add("Tangent");
+            CBoxCity.Add("Waterloo");
+
+            ClearSearchList();
         }
 
         private void ClearSearchList()
         {
-            ClearAndZoomFull();
+            clearUIselections = true;
 
-            //txtNumber.TextChanged -= txtNumber_TextChanged;
-            //txtStreet.TextChanged -= txtStreet_TextChanged;
-            //cBoxCity.SelectionChanged -= cBoxCity_SelectionChanged;
-            //txtNumber.Text = "";
-            //txtStreet.Text = "";
-            //cBoxCity.SelectedIndex = 0;
-            //txtNumber.TextChanged += txtNumber_TextChanged;
-            //txtStreet.TextChanged += txtStreet_TextChanged;
-            //cBoxCity.SelectionChanged += cBoxCity_SelectionChanged;
+            ClearAndZoomFull();
 
             TxtTaxlot = "";
             SelCBoxTownship = null;
@@ -373,20 +454,32 @@ namespace Taxlot_Search
             TxtTaxlotMap = "";
             TxtTaxlotPIN = "";
             TxtAssessorNum = "";
+            TxtOwnerLastName = "";
+            TxtNumber = "";
+            TxtStreet = "";
+            SelCBoxCity = "Entire County";
+
+            clearUIselections = false;
         }
 
         private void ClearAndZoomFull()
         {
-            // clear all map selections
-            if (SelectedLayer != null)
+            if (MapView.Active != null)
             {
-                QueuedTask.Run(() =>
+                // clear all map selections
+                if (SelectedLayer != null)
                 {
-                    MapView.Active.Map.ClearSelection();
-                    MapView.Active.ZoomTo(SelectedLayer);
-                });
+                    QueuedTask.Run(() =>
+                    {
+                        MapView.Active.Map.ClearSelection();
+                        MapView.Active.ZoomTo(SelectedLayer);
+                    });
+                }
+                else
+                {
+                    QueuedTask.Run(() => MapView.Active.Map.ClearSelection());
+                }
             }
-            else { QueuedTask.Run(() => MapView.Active.Map.ClearSelection()); }
         }
 
         private void setMapAndPINText()
@@ -464,7 +557,14 @@ namespace Taxlot_Search
         private async void SearchAssessorNum()
         {
             if (!allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
-                MessageBox.Show("Wrong layer!");
+            {
+                var featurelayerCheck = MapView.Active.Map.GetLayersAsFlattenedList().OfType<FeatureLayer>().ToList();
+                foreach (FeatureLayer layerCheckMember in featurelayerCheck)
+                {
+                    if (allowedTaxlotNames.Contains(layerCheckMember.Name.ToLower()))
+                        SelectedLayer = layerCheckMember;
+                }
+            }
 
             if (SelectedLayer != null)
             {
@@ -479,6 +579,33 @@ namespace Taxlot_Search
                     else { MessageBox.Show("Enter a valid number into the Assessor number box.", "Taxlot/Address Search Alert"); }
                 }
                 else { MessageBox.Show("To search on Assessor number, the Linn County taxlot layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
+            }
+            else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }
+        }
+
+        private async void SearchOwner()
+        {
+            if (!allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+            {
+                var featurelayerCheck = MapView.Active.Map.GetLayersAsFlattenedList().OfType<FeatureLayer>().ToList();
+                foreach (FeatureLayer layerCheckMember in featurelayerCheck)
+                {
+                    if (allowedTaxlotNames.Contains(layerCheckMember.Name.ToLower()))
+                        SelectedLayer = layerCheckMember;
+                }
+            }
+
+            if (SelectedLayer != null)
+            {
+                if (TxtOwnerLastName != "")
+                {
+                    if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+                    {
+                        await selectTaxlotByOwner(TxtOwnerLastName);
+                    }
+                    else { MessageBox.Show("To search on owner name, the Linn County taxlot layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
+                }
+                else { MessageBox.Show("Enter an Owner Name into the Owner Last Name textbox.", "Taxlot/Address Search Alert"); }
             }
             else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }
         }
@@ -554,6 +681,190 @@ namespace Taxlot_Search
             }
         }
 
+        private async Task selectTaxlotByOwner(string ownerName)
+        {
+            //var featLayer = MapView.Active.Map.FindLayers(cBoxLayer.Text).FirstOrDefault() as FeatureLayer;
+            if (SelectedLayer != null)
+            {
+                string layerName = SelectedLayer.Name;
+                Selection featSelection = await QueuedTask.Run<Selection>(() =>
+                {
+                    // clear all map selections
+                    MapView.Active.Map.SetSelection(null);
+
+                    // create query filter for selection
+                    QueryFilter queryFilter = new QueryFilter();
+                    queryFilter.WhereClause = "OWNER1 LIKE '%" + ownerName.ToUpper() + "%'";
+
+                    Selection resultSel = SelectedLayer.Select(queryFilter, SelectionCombinationMethod.New);
+
+                    if (resultSel.GetCount() == 0)
+                        MessageBox.Show("Owner name: " + ownerName + " not found on layer: " + layerName, "Taxlot/Address Search Alert");
+                    else
+                    {
+                        MapView.Active.ZoomToSelected();
+                        MapView.Active.ZoomOutFixed();
+                    }
+
+                    return resultSel;
+                });
+            }
+        }
+
+        private async void ValidateSelectAddress()
+        {
+            if (!allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+            {
+                var featurelayerCheck = MapView.Active.Map.GetLayersAsFlattenedList().OfType<FeatureLayer>().ToList();
+                foreach (FeatureLayer layerCheckMember in featurelayerCheck)
+                {
+                    if (allowedAddressNames.Contains(layerCheckMember.Name.ToLower()))
+                        SelectedLayer = layerCheckMember;
+                }
+            }
+
+            if (SelectedLayer != null)
+            {
+                if (validateNumber(TxtNumber) || TxtNumber == "")
+                {
+                    if (allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+                    {
+                        await selectAddressesAsync(TxtNumber, TxtStreet, SelCBoxCity);
+                    }
+                    else { MessageBox.Show("To search for an address, the Linn County Address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
+                }
+                else { MessageBox.Show("Enter a valid number into the address number field.", "Taxlot/Address Search Alert"); }
+            }
+            else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }
+        }
+
+        private async Task selectAddressesAsync(string numberVal, string streetVal, string cityVal = "")
+        {
+            //var featLayer = MapView.Active.Map.FindLayers(cBoxLayer.Text).FirstOrDefault() as FeatureLayer;
+            if (SelectedLayer != null)
+            {
+                //string layerName = cBoxLayer.Text;
+                await QueuedTask.Run(() =>
+                {
+                    // clear all map selections
+                    MapView.Active.Map.SetSelection(null);
+
+                    // create query filter for selection
+                    QueryFilter queryFilter = new QueryFilter();
+                    //List<string> addressListAsync = new List<string>();
+
+                    if (numberVal != "" && numberVal != null)
+                    {
+                        if (streetVal != "" && streetVal != null)
+                        {
+                            if (cityVal != "Entire County")
+                                queryFilter.WhereClause = "NUMBER = " + numberVal + " and " + "STREET LIKE '%" + streetVal.ToUpper() + "%'" + " and " + "CITY = '" + cityVal.ToUpper() + "'";
+                            else
+                                queryFilter.WhereClause = "NUMBER = " + numberVal + " and " + "STREET LIKE '%" + streetVal.ToUpper() + "%'";
+                        }
+                        else
+                        {
+                            if (cityVal != "Entire County")
+                                queryFilter.WhereClause = "NUMBER = " + numberVal + " and " + "CITY = '" + cityVal.ToUpper() + "'";
+                            else
+                                queryFilter.WhereClause = "NUMBER = " + numberVal;
+                        }
+                    }
+                    else
+                    {
+                        if (streetVal != "" && streetVal != null)
+                        {
+                            if (cityVal != "Entire County")
+                                queryFilter.WhereClause = "STREET LIKE '%" + streetVal.ToUpper() + "%'" + " and " + "CITY = '" + cityVal.ToUpper() + "'";
+                            else
+                                queryFilter.WhereClause = "STREET LIKE '%" + streetVal.ToUpper() + "%'";
+                        }
+                        else
+                        {
+                            if (cityVal != "Entire County")
+                                queryFilter.WhereClause = "CITY = '" + cityVal.ToUpper() + "'";
+                            else
+                                return;
+                        }
+                    }
+
+                    Selection resultSel = SelectedLayer.Select(queryFilter, SelectionCombinationMethod.New);
+                    //using (RowCursor rowCursor = resultSel.Search())
+                    //{
+                    //    while (rowCursor.MoveNext())
+                    //    {
+                    //        using (Row row = rowCursor.Current)
+                    //        {
+                    //            addressListAsync.Add(row[rowCursor.FindField("SITUS_1")].ToString());
+                    //        }
+                    //    }
+                    //}
+
+                    //if (resultSel.GetCount() == 0)
+                    //    MessageBox.Show("Addresses were not found matching your search terms on layer: " + layerName, "Taxlot/Address Search Alert");
+                    //else
+                    //{
+                    //MapView.Active.ZoomToSelected();
+                    //MapView.Active.ZoomOutFixed();
+                    //}
+
+                    return;
+                });
+            }
+        }
+
+        private void SelectPropertyInfo()
+        {
+            // zoom to selected address
+            if (SelPropertyInfoList != null)
+            {
+                string layerName = SelectedLayer.Name;
+                string selectedLayer;
+                if (allowedTaxlotNames.Contains(layerName.ToLower()))
+                    selectedLayer = "taxlots";
+                else if (allowedAddressNames.Contains(layerName.ToLower()))
+                    selectedLayer = "address";
+                else
+                    selectedLayer = "(Not Found)";
+
+                string propInfoString = SelPropertyInfoList;
+                var featLayer = MapView.Active.Map.FindLayers(layerName).FirstOrDefault() as FeatureLayer;
+                if (featLayer != null)
+                {
+                    QueuedTask.Run(() =>
+                    {
+                        // clear all map selections
+                        MapView.Active.Map.SetSelection(null);
+
+                        // create query filter for selection
+                        QueryFilter queryFilter = new QueryFilter();
+
+                        if (selectedLayer == "address")
+                            queryFilter.WhereClause = "SITUS_1 = '" + propInfoString.Split(',')[0] + "'";
+                        else if (selectedLayer == "taxlots")
+                            queryFilter.WhereClause = "OWNER1 = '" + propInfoString + "'";
+                        else
+                            return;
+
+                        var resultSel = featLayer.Select(queryFilter, SelectionCombinationMethod.New);
+
+                        if (resultSel.GetCount() > 0)
+                        {
+                            MapView.Active.ZoomToSelected();
+                            //MapView.Active.ZoomOutFixed();
+                        }
+
+                        if (resultSel.GetCount() == 1 && selectedLayer == "address")
+                        {
+                            // get a camera to set the zoom level
+                            var camera = MapView.Active.Camera;
+                            camera.Scale = 5000.0;
+                            MapView.Active.ZoomTo(camera);
+                        }
+                    });
+                }
+            }
+        }
 
         #endregion
 
@@ -601,7 +912,7 @@ namespace Taxlot_Search
                     {
                         _ = QueuedTask.Run(() =>
                         {
-                            PropertyIntoItems newPropItem;
+                            string newPropItem;
                             var firstSelectionSet = args.Selection.First();
 
                             // create an instance of the inspector class
@@ -612,14 +923,14 @@ namespace Taxlot_Search
                             {
                                 inspector.Load(firstSelectionSet.Key, selectedOID);
 
-                                newPropItem = new PropertyIntoItems();
+                                //newPropItem = new PropertyIntoItems();
 
                                 if (selectedLayer == "address")
-                                    newPropItem.Name = inspector["SITUS_1"].ToString() + ", " + inspector["CITY"].ToString();
+                                    newPropItem = inspector["SITUS_1"].ToString() + ", " + inspector["CITY"].ToString();
                                 else if (selectedLayer == "taxlots")
-                                    newPropItem.Name = inspector["OWNER1"].ToString();
+                                    newPropItem = inspector["OWNER1"].ToString();
                                 else
-                                    newPropItem.Name = "Layer not recognized";
+                                    newPropItem = "Layer not recognized";
 
                                 PropertyInfoList.Add(newPropItem);
                                 if (PropertyInfoList.Count() > 500)
@@ -713,19 +1024,21 @@ namespace Taxlot_Search
         public ICommand SearchMapCmd => _searchMapCmd;
         public ICommand SearchPINCmd => _searchPINCmd;
         public ICommand SearchAssessorNumCmd => _searchAssessorNumCmd;
+        public ICommand SearchOwnerCmd => _searchOwnerCmd;
+        public ICommand SeaerchAddressCmd => _searchAddressCmd;
 
         #endregion
     }
 
-    public class PropertyIntoItems : DockPane
-    {
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
-        }
-    }
+    //public class PropertyIntoItems : DockPane
+    //{
+    //    private string _name;
+    //    public string Name
+    //    {
+    //        get { return _name; }
+    //        set { SetProperty(ref _name, value); }
+    //    }
+    //}
 
     /// <summary>
     /// Button implementation to show the DockPane.
