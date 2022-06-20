@@ -1025,7 +1025,7 @@ namespace Taxlot_Search
         public ICommand SearchPINCmd => _searchPINCmd;
         public ICommand SearchAssessorNumCmd => _searchAssessorNumCmd;
         public ICommand SearchOwnerCmd => _searchOwnerCmd;
-        public ICommand SeaerchAddressCmd => _searchAddressCmd;
+        public ICommand SearchAddressCmd => _searchAddressCmd;
 
         #endregion
     }

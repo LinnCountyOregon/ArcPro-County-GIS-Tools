@@ -107,9 +107,17 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Foreground="#FF8D8D8D" HorizontalAlignment="Right">Number</Label>
-                <TextBox x:Name="txtNumber" Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding TxtNumber, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox x:Name="txtNumber" Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding TxtNumber, UpdateSourceTrigger=PropertyChanged}" >
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding SearchAddressCmd}" Key="Enter" />
+                    </TextBox.InputBindings>
+                </TextBox>
                 <Label Grid.Row="1" Grid.Column="0" Foreground="#FF8D8D8D" HorizontalAlignment="Right">Street</Label>
-                <TextBox x:Name="txtStreet" Grid.Row="1" Grid.Column="1" Margin="3" Text="{Binding TxtStreet, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox x:Name="txtStreet" Grid.Row="1" Grid.Column="1" Margin="3" Text="{Binding TxtStreet, UpdateSourceTrigger=PropertyChanged}" >
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding SearchAddressCmd}" Key="Enter" />
+                    </TextBox.InputBindings>
+                </TextBox>
                 <Label Grid.Row="2" Grid.Column="0" Foreground="#FF8D8D8D" HorizontalAlignment="Right">City</Label>
                 <ComboBox x:Name="cBoxCity" Grid.Column="1" Grid.Row="2" Margin="3" ItemsSource="{Binding CBoxCity}" SelectedItem="{Binding SelCBoxCity, Mode=TwoWay}" />
             </Grid>
