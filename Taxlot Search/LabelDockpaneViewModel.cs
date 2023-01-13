@@ -46,13 +46,13 @@ namespace Taxlot_Search
             MapSelectionChangedEvent.Subscribe(OnSelectionChanged);
             ActiveToolChangedEvent.Subscribe(OnActiveToolChanged);
             ActiveMapViewChangedEvent.Subscribe(OnActiveMapViewChanged);
-            ActiveLayoutViewChangedEvent.Subscribe(OnActiveLayoutViewChanged);
+            LayoutViewEvent.Subscribe(OnActiveLayoutViewChanged);
         }
 
         ~LabelDockpaneViewModel()
         {
             ActiveMapViewChangedEvent.Unsubscribe(OnActiveMapViewChanged);
-            ActiveLayoutViewChangedEvent.Unsubscribe(OnActiveLayoutViewChanged);
+            LayoutViewEvent.Unsubscribe(OnActiveLayoutViewChanged);
             MapSelectionChangedEvent.Unsubscribe(OnSelectionChanged);
             ActiveToolChangedEvent.Unsubscribe(OnActiveToolChanged);
         }
@@ -310,7 +310,7 @@ namespace Taxlot_Search
         }
         private void OnActiveLayoutViewChanged(LayoutViewEventArgs args)
         {
-            if (args.LayoutView != null)
+            if (args.Hint == LayoutViewEventHint.Activated || args.Hint == LayoutViewEventHint.Opened)
                 _heading = "Label Layout: " + LayoutView.Active.Layout.Name;
             else
                 if (ProApp.Panes.Count == 0)
@@ -476,7 +476,7 @@ namespace Taxlot_Search
             });
         }
 
-        private Task UpdateForActiveMap(BasicFeatureLayer LabelLayer, bool activeMapChanged = true, Dictionary<MapMember, List<long>> mapSelection = null)
+        private Task UpdateForActiveMap(BasicFeatureLayer LabelLayer, bool activeMapChanged = true, SelectionSet mapSelection = null)
         {
             return QueuedTask.Run(() =>
             {
@@ -487,7 +487,7 @@ namespace Taxlot_Search
                     long oid = -1;
                     if (mapSelection != null)
                     {
-                        if (mapSelection.ContainsKey(LabelLayer))
+                        if (mapSelection.Contains(LabelLayer))
                             oid = mapSelection[LabelLayer].FirstOrDefault();
                         // oids.AddRange(mapSelection[SelectedLayer]);
                     }
@@ -525,7 +525,7 @@ namespace Taxlot_Search
                     textSymbol.VerticalAlignment = VerticalAlignment.Center;
 
                     //Sets the geometry of the text graphic
-                    var insp = new ArcGIS.Desktop.Editing.Attributes.Inspector(true);
+                    var insp = new ArcGIS.Desktop.Editing.Attributes.Inspector();
                     insp.Load(LabelLayer, (long)SelectedOID);
 
                     // get text point from the point clicked on the map
@@ -595,8 +595,8 @@ namespace Taxlot_Search
             if (SelectedLine.Shape.GeometryType == GeometryType.Polyline)
             {
                 // Don't extent the segment
-                SegmentExtension extension = SegmentExtension.NoExtension;
-                Polyline polyline = PolylineBuilder.CreatePolyline(SelectedLine.Shape as Polyline);
+                SegmentExtensionType extension = SegmentExtensionType.NoExtension;
+                Polyline polyline = PolylineBuilderEx.CreatePolyline(SelectedLine.Shape as Polyline);
 
                 double distanceAlongCurve, distanceFromCurve;
                 LeftOrRightSide whichSide;

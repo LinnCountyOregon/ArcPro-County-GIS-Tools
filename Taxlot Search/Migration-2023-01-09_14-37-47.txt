@@ -1,0 +1,9 @@
+Migration Status Report
+  Migrate project: Y:\VisualStudio\arcPro_Addins\County GIS Tools\Taxlot Search\Taxlot Search.csproj
+  Taxlot Search.csproj
+   project folder: 
+   Y:\VisualStudio\arcPro_Addins\County GIS Tools\Taxlot Search\
+   Y:\VisualStudio\arcPro_Addins\County GIS Tools\Taxlot Search\
+   language: CS
+   project type: AddIn
+   project has WPF: PresentationFramework

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ArcGIS.Core.CIM;
 using ArcGIS.Core.Data;
+using ArcGIS.Core.Data.Exceptions;
 using ArcGIS.Desktop.Core;
 using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
@@ -53,7 +54,7 @@ namespace Taxlot_Search
                 {
                     try
                     {
-                        var imageLayer = LayerFactory.Instance.CreateLayer(new Uri(serviceURL, UriKind.Absolute), MapView.Active.Map, LayerPosition.AddToBottom) as FeatureLayer;
+                        var imageLayer = LayerFactory.Instance.CreateLayer(new Uri(serviceURL, UriKind.Absolute), MapView.Active.Map) as FeatureLayer;
 
                         return MapView.Active.GetSelectedLayers()[0] as FeatureLayer;
                     }
@@ -104,7 +105,13 @@ namespace Taxlot_Search
                     {
                         // open shapefile to map layer
                         System.Uri uriPath = new System.Uri(pathToData + "\\" + DataSetName + ".shp");
-                        FeatureLayer shp_layer = LayerFactory.Instance.CreateFeatureLayer(uriPath, MapView.Active.Map, layerName: DataSetName, rendererDefinition: getSimpleRendererDef(DataSetName.ToLower()));
+                        var layerParams = new FeatureLayerCreationParams(uriPath)
+                        {
+                            Name = DataSetName,
+                            RendererDefinition = getSimpleRendererDef(DataSetName.ToLower())
+                        };
+                        FeatureLayer shp_layer = LayerFactory.Instance.CreateLayer<FeatureLayer>(layerParams, MapView.Active.Map);
+                        //FeatureLayer shp_layer = LayerFactory.Instance.CreateFeatureLayer(uriPath, MapView.Active.Map, layerName: DataSetName, rendererDefinition: getSimpleRendererDef(DataSetName.ToLower()));
 
                         // set unique values on zoning layer
                         if (DataSetName.ToLower() == "zoning")
@@ -150,7 +157,15 @@ namespace Taxlot_Search
                                 // MessageBox.Show("Gdb type: " + linnPublicationSDE.GetGeodatabaseType().ToString());
                                 FeatureClass fcSDE = linnPublicationSDE.OpenDataset<FeatureClass>("LinnPublication.DBO." + DataSetName);
                                 // MessageBox.Show("Attempting to create layer from featureclass and set symbology");
-                                FeatureLayer SDElayer = LayerFactory.Instance.CreateFeatureLayer(fcSDE, MapView.Active.Map, layerName: DataSetName, rendererDefinition: getSimpleRendererDef(DataSetName.ToLower())) as FeatureLayer;
+
+                                var layerParams = new FeatureLayerCreationParams(fcSDE)
+                                {
+                                    Name = DataSetName,
+                                    RendererDefinition = getSimpleRendererDef(DataSetName.ToLower())
+                                };
+                                FeatureLayer SDElayer = LayerFactory.Instance.CreateLayer<FeatureLayer>(layerParams, MapView.Active.Map);
+
+                                //FeatureLayer SDElayer = LayerFactory.Instance.CreateFeatureLayer(fcSDE, MapView.Active.Map, layerName: DataSetName, rendererDefinition: getSimpleRendererDef(DataSetName.ToLower())) as FeatureLayer;
 
                                 // set unique values on zoning layer
                                 if (DataSetName.ToLower() == "zoning")

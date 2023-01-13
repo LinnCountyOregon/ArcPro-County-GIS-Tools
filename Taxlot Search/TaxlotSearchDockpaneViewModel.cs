@@ -321,7 +321,7 @@ namespace Taxlot_Search
 
         #region Private Methods
 
-        private Task UpdateForActiveMap(bool activeMapChanged = true, Dictionary<MapMember, List<long>> mapSelection = null)
+        private Task UpdateForActiveMap(bool activeMapChanged = true, SelectionSet mapSelection = null)
         {
             return QueuedTask.Run(() =>
             {
@@ -354,7 +354,7 @@ namespace Taxlot_Search
                 //    List<long> oids = new List<long>();
                 //    if (mapSelection != null)
                 //    {
-                //        if (mapSelection.ContainsKey(SelectedLayer))
+                //        if (mapSelection.Contains(SelectedLayer))
                 //            oids.AddRange(mapSelection[SelectedLayer]);
                 //    }
                 //    else
@@ -896,14 +896,15 @@ namespace Taxlot_Search
 
             // load selected property into into the address list combo box
             PropertyInfoList.Clear();
-            if (args.Selection.Count() != 0)
+            var selectionDict = args.Selection.ToDictionary();
+            if (args.Selection.Count != 0)
             {            
-                if (allowedAddressNames.Contains(args.Selection.Keys.FirstOrDefault().Name.ToLower()) || allowedTaxlotNames.Contains(args.Selection.Keys.FirstOrDefault().Name.ToLower()))
+                if (allowedAddressNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()) || allowedTaxlotNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()))
                 {
                     string selectedLayer;
-                    if (allowedTaxlotNames.Contains(args.Selection.Keys.FirstOrDefault().Name.ToLower()))
+                    if (allowedTaxlotNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()))
                         selectedLayer = "taxlots";
-                    else if (allowedAddressNames.Contains(args.Selection.Keys.FirstOrDefault().Name.ToLower()))
+                    else if (allowedAddressNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()))
                         selectedLayer = "address";
                     else
                         selectedLayer = "(Not Found)";
@@ -913,10 +914,10 @@ namespace Taxlot_Search
                         _ = QueuedTask.Run(() =>
                         {
                             string newPropItem;
-                            var firstSelectionSet = args.Selection.First();
+                            var firstSelectionSet = selectionDict.First();
 
                             // create an instance of the inspector class
-                            var inspector = new ArcGIS.Desktop.Editing.Attributes.Inspector(false);
+                            var inspector = new ArcGIS.Desktop.Editing.Attributes.Inspector();
 
                             // load the selected features into the inspector using a list of object IDs
                             foreach (long selectedOID in firstSelectionSet.Value)

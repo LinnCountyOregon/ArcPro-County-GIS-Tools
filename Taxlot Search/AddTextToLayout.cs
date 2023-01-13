@@ -54,7 +54,8 @@ namespace Taxlot_Search
 
                 const string quote = "\"";
                 string textString = "<dyn type=" + quote + "date" + quote + " format=" + quote + quote + "/>";
-                GraphicElement ptTxtElm = LayoutElementFactory.Instance.CreatePointTextGraphicElement(ActiveElementContainer, (Coordinate2D)geometry, textString, sym);
+                //GraphicElement ptTxtElmOld = LayoutElementFactory.Instance.CreatePointTextGraphicElement(ActiveElementContainer, (Coordinate2D)geometry, textString, sym);
+                GraphicElement ptTxtElm = ElementFactory.Instance.CreateTextGraphicElement(ActiveElementContainer, TextType.PointText, geometry, sym, textString);
                 ptTxtElm.SetName("Layout Date Text");
 
                 //Change additional text properties

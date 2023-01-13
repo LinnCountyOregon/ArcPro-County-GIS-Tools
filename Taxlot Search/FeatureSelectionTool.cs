@@ -55,7 +55,7 @@ namespace Taxlot_Search
                 //var layerSelection = result.FirstOrDefault(kvp => kvp.Key == LabelVM.SelectedLayer);
 
                 //Clear the selection if no features where returned
-                if (!result.ContainsKey(LabelVM.SelectedLayer))
+                if (!result.Contains(LabelVM.SelectedLayer))
                 {
                     LabelVM.SelectedLayer.Select(null, SelectionCombinationMethod.Subtract);
                     return true;

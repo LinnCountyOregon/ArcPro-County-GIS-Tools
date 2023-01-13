@@ -41,11 +41,11 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Foreground="#FF8D8D8D">Layer</Label>
+                <Label Grid.Column="0" Grid.Row="0">Layer</Label>
                 <ComboBox x:Name="cBoxLayer" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedLayer, Mode=TwoWay}" Margin="5" Width="180"/>
-                <Label Grid.Column="0" Grid.Row="1" Foreground="#FF8D8D8D">Field</Label>
+                <Label Grid.Column="0" Grid.Row="1">Field</Label>
                 <ComboBox x:Name="cBoxField" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Fields}" SelectedItem="{Binding SelectedField, Mode=TwoWay}" DisplayMemberPath="Name" Margin="5" Width="180"/>
-                <Label Grid.Column="0" Grid.Row="2" Foreground="#FF8D8D8D">Font Size</Label>
+                <Label Grid.Column="0" Grid.Row="2">Font Size</Label>
                 <ComboBox x:Name="cBoxFontSize" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding TextSizes}" SelectedItem="{Binding SelectedFontSize, Mode=OneWayToSource}" Margin="5" Width="180" ToolTip="Set the font size for all labeling tools in this Label Wizard." />
             </Grid>
             <Grid x:Name="LabelMapButton">
@@ -71,13 +71,18 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
             </Grid>
-            <Label Margin="0,0,0,-5" Foreground="#FF8D8D8D" Padding="8" HorizontalAlignment="Center" Content="Select Fields to Label from Taxlot" />
+            <Label Margin="0,0,0,-5" Padding="8" HorizontalAlignment="Center" Content="Select Fields to Label from Taxlot" />
 
-            <CheckBox x:Name="checkBoxPIN" Content="PIN" Grid.Column="0" Grid.Row="0" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotPIN, Mode=OneWayToSource}" Margin="10,0,10,0" />
-            <CheckBox x:Name="checkBoxActNum" Content="Assessor Number" Grid.Column="0" Grid.Row="1" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotActNum, Mode=OneWayToSource}" Margin="10,2,10,0" />
-            <CheckBox x:Name="checkBoxOwnerName" Content="Owner Name" Grid.Column="0" Grid.Row="2" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotOwnerName, Mode=OneWayToSource}" Margin="10,2,10,0" />
-            <CheckBox x:Name="checkBoxOwnerAddress" Content="Owner Address" Grid.Column="0" Grid.Row="3" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotOwnerAddress, Mode=OneWayToSource}" Margin="10,2,10,0" />
-            <CheckBox x:Name="checkBoxAcres" Content="Acres" Grid.Column="0" Grid.Row="4" Foreground="WhiteSmoke" IsChecked="{Binding CheckedTaxlotAcres, Mode=OneWayToSource}" Margin="10,2,10,0" />
+            <CheckBox x:Name="checkBoxPIN" Content="PIN" Grid.Column="0" Grid.Row="0"
+                      IsChecked="{Binding CheckedTaxlotPIN, Mode=OneWayToSource}" Margin="10,0,10,0"></CheckBox>
+            <CheckBox x:Name="checkBoxActNum" Content="Assessor Number" Grid.Column="0" Grid.Row="1"
+                      IsChecked="{Binding CheckedTaxlotActNum, Mode=OneWayToSource}" Margin="10,2,10,0" />
+            <CheckBox x:Name="checkBoxOwnerName" Content="Owner Name" Grid.Column="0" Grid.Row="2"
+                      IsChecked="{Binding CheckedTaxlotOwnerName, Mode=OneWayToSource}" Margin="10,2,10,0" />
+            <CheckBox x:Name="checkBoxOwnerAddress" Content="Owner Address" Grid.Column="0" Grid.Row="3"
+                      IsChecked="{Binding CheckedTaxlotOwnerAddress, Mode=OneWayToSource}" Margin="10,2,10,0" />
+            <CheckBox x:Name="checkBoxAcres" Content="Acres" Grid.Column="0" Grid.Row="4"
+                      IsChecked="{Binding CheckedTaxlotAcres, Mode=OneWayToSource}" Margin="10,2,10,0" />
 
             <ToggleButton x:Name="btnLabelTaxlot" Margin="10" Height="25" Command="{Binding SelectTaxlotToolCmd}" IsChecked="{Binding SelectTaxlotToolActive}" Content="Label Taxlot">
                 <ToolTipService.ToolTip>

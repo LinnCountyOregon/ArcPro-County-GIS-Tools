@@ -74,7 +74,7 @@ namespace Taxlot_Search
                 if (LabelLayer != null)
                 {
                     //Clear the selection if no features where returned
-                    if (!result.ContainsKey(LabelLayer))
+                    if (!result.Contains(LabelLayer))
                     {
                         LabelLayer.Select(null, SelectionCombinationMethod.Subtract);
                         return true;

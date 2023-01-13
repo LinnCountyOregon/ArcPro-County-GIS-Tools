@@ -22,7 +22,7 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Foreground="#FF8D8D8D">Layer</Label>
+                <Label Grid.Column="0">Layer</Label>
                 <ComboBox x:Name="cBoxLayer" Grid.Column="1" ItemsSource="{Binding Layers}" SelectedItem="{Binding SelectedLayer, Mode=TwoWay}" Margin="5" Width="180"/>
             </Grid>
             <Grid>
@@ -37,16 +37,16 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Foreground="#FF8D8D8D">Township</Label>
-                <Label Grid.Column="1" Grid.Row="0" Foreground="#FF8D8D8D">Range</Label>
-                <Label Grid.Column="2" Grid.Row="0" Foreground="#FF8D8D8D">Section</Label>
+                <Label Grid.Column="0" Grid.Row="0">Township</Label>
+                <Label Grid.Column="1" Grid.Row="0">Range</Label>
+                <Label Grid.Column="2" Grid.Row="0">Section</Label>
                 <ComboBox x:Name="cBoxTownship" Grid.Column="0" Grid.Row="1" Margin="3,0,3,0" ItemsSource="{Binding CBoxTownship}" SelectedItem="{Binding SelCBoxTownship, Mode=TwoWay}" />
                 <ComboBox x:Name="cBoxRange" Grid.Column="1" Grid.Row="1" Margin="3,0,3,0" ItemsSource="{Binding CBoxRange}" SelectedItem="{Binding SelCBoxRange, Mode=TwoWay}" />
                 <ComboBox x:Name="cBoxSection" Grid.Column="2" Grid.Row="1" Margin="3,0,3,0" ItemsSource="{Binding CBoxSection}" SelectedItem="{Binding SelCBoxSection, Mode=TwoWay}" />
 
-                <Label Grid.Column="0" Grid.Row="2" Margin="0,5,0,0" Foreground="#FF8D8D8D">Qtr Section</Label>
-                <Label Grid.Column="1" Grid.Row="2" Margin="0,5,0,0" Foreground="#FF8D8D8D">Qtr-Qtr Section</Label>
-                <Label Grid.Column="2" Grid.Row="2" Margin="0,5,0,0" Foreground="#FF8D8D8D">Taxlot</Label>
+                <Label Grid.Column="0" Grid.Row="2" Margin="0,5,0,0">Qtr Section</Label>
+                <Label Grid.Column="1" Grid.Row="2" Margin="0,5,0,0">Qtr-Qtr Section</Label>
+                <Label Grid.Column="2" Grid.Row="2" Margin="0,5,0,0">Taxlot</Label>
                 <ComboBox x:Name="cBoxQtrSec" Grid.Column="0" Grid.Row="3" Margin="3,0,3,0" ItemsSource="{Binding CBoxQtrSec}" SelectedItem="{Binding SelCBoxQtrSec, Mode=TwoWay}" />
                 <ComboBox x:Name="cBoxQtrQtrSec" Grid.Column="1" Grid.Row="3" Margin="3,0,3,0" ItemsSource="{Binding CBoxQtrQtrSec}" SelectedItem="{Binding SelCBoxQtrQtrSec, Mode=TwoWay}" />
                 <TextBox x:Name="txtTaxlot" Grid.Column="2" Grid.Row="3" Margin="3,0,3,0" Text="{Binding TxtTaxlot, UpdateSourceTrigger=PropertyChanged}" />
@@ -66,10 +66,10 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Margin="0,0,0,-5" Foreground="#FF8D8D8D">Taxlot Map</Label>
+                <Label Grid.Row="0" Grid.Column="0" Margin="0,0,0,-5">Taxlot Map</Label>
                 <TextBox x:Name="txtTaxlotMap" Grid.Row="1" Grid.Column="0" Height="20" VerticalAlignment="Bottom" Text="{Binding TxtTaxlotMap}" />
                 <Button x:Name="btnSearchMap" Grid.Row="1" Grid.Column="1" Margin="3,0,3,0" Height="25" Command="{Binding SearchMapCmd}" Content="Search Taxlot Map" />
-                <Label Grid.Row="2" Grid.Column="0" Margin="0,0,0,-5" Foreground="#FF8D8D8D">Taxlot PIN</Label>
+                <Label Grid.Row="2" Grid.Column="0" Margin="0,0,0,-5">Taxlot PIN</Label>
                 <TextBox x:Name="txtTaxlotPIN" Grid.Row="3" Grid.Column="0" Margin="0,0,0,5" Height="20" VerticalAlignment="Bottom" Text="{Binding TxtTaxlotPIN}" />
                 <Button x:Name="btnSearchPIN" Grid.Row="3" Grid.Column="1" Margin="3,0,3,5" Height="25" Command="{Binding SearchPINCmd}" Content="Search Taxlot PIN" />
             </Grid>
@@ -87,15 +87,15 @@
                     <ColumnDefinition Width="134*"/>
                     <ColumnDefinition Width="141*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Margin="0,0,0,20" Foreground="#FF8D8D8D" Grid.ColumnSpan="2" Grid.RowSpan="2">Assessor Number</Label>
+                <Label Grid.Row="0" Grid.Column="0" Margin="0,0,0,20" Grid.ColumnSpan="2" Grid.RowSpan="2">Assessor Number</Label>
                 <TextBox x:Name="txtAssessorNum" Grid.Row="1" Grid.Column="0" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Text="{Binding TxtAssessorNum}" />
-                <Button x:Name="btnSearchAssessorNum" Grid.Row="1" Grid.Column="2" Margin="3,0,3,0" Height="25" Command="{Binding SearchAssessorNumCmd}" Content="Search Assessor Num" />
-                <Label Grid.Row="2" Grid.Column="0" Margin="0,0,0,25" Foreground="#FF8D8D8D" Grid.ColumnSpan="2" Grid.RowSpan="2">Owner Last Name</Label>
+                <Button x:Name="btnSearchAssessorNum" Grid.Row="1" Grid.Column="2" Margin="3,5,3,-3" Height="25" Command="{Binding SearchAssessorNumCmd}" Content="Search Assessor Num" />
+                <Label Grid.Row="2" Grid.Column="0" Margin="0,0,0,25" Grid.ColumnSpan="2" Grid.RowSpan="2">Owner Last Name</Label>
                 <TextBox x:Name="txtOwnerLastName" Grid.Row="3" Grid.Column="0" Margin="0,0,0,5" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Text="{Binding TxtOwnerLastName}" />
-                <Button x:Name="btnSearchOwner" Grid.Row="3" Grid.Column="2" Margin="3,0,3,5" Height="25" Command="{Binding SearchOwnerCmd}" Content="Search Owner Name" />
+                <Button x:Name="btnSearchOwner" Grid.Row="3" Grid.Column="2" Margin="3,0,3,0" Height="25" Command="{Binding SearchOwnerCmd}" Content="Search Owner Name" />
             </Grid>
             <Separator/>
-            <Label Foreground="#FF8D8D8D">Search by Address</Label>
+            <Label>Search by Address</Label>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -106,22 +106,22 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Foreground="#FF8D8D8D" HorizontalAlignment="Right">Number</Label>
+                <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">Number</Label>
                 <TextBox x:Name="txtNumber" Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding TxtNumber, UpdateSourceTrigger=PropertyChanged}" >
                     <TextBox.InputBindings>
                         <KeyBinding Command="{Binding SearchAddressCmd}" Key="Enter" />
                     </TextBox.InputBindings>
                 </TextBox>
-                <Label Grid.Row="1" Grid.Column="0" Foreground="#FF8D8D8D" HorizontalAlignment="Right">Street</Label>
+                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">Street</Label>
                 <TextBox x:Name="txtStreet" Grid.Row="1" Grid.Column="1" Margin="3" Text="{Binding TxtStreet, UpdateSourceTrigger=PropertyChanged}" >
                     <TextBox.InputBindings>
                         <KeyBinding Command="{Binding SearchAddressCmd}" Key="Enter" />
                     </TextBox.InputBindings>
                 </TextBox>
-                <Label Grid.Row="2" Grid.Column="0" Foreground="#FF8D8D8D" HorizontalAlignment="Right">City</Label>
+                <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right">City</Label>
                 <ComboBox x:Name="cBoxCity" Grid.Column="1" Grid.Row="2" Margin="3" ItemsSource="{Binding CBoxCity}" SelectedItem="{Binding SelCBoxCity, Mode=TwoWay}" />
             </Grid>
-            <ListBox x:Name="lBoxPropertyInfo" Margin="0,5,0,5" MinHeight="50" Height="144" Foreground="#FF8D8D8D" ItemsSource="{Binding PropertyInfoList}" SelectedItem="{Binding SelPropertyInfoList}" />
+            <ListBox x:Name="lBoxPropertyInfo" Margin="0,5,0,5" MinHeight="50" Height="144" ItemsSource="{Binding PropertyInfoList}" SelectedItem="{Binding SelPropertyInfoList}" />
             <Label Foreground="#FFFF8F5B" Panel.ZIndex="-4" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,-10,0,0">Only the first 500 results are shown here</Label>
             <Button x:Name="btnClearSearchList" Margin="0,5,0,5" Height="25" Command="{Binding ClearSearchListCmd}" Content="Clear Search Results" />
         </StackPanel>
