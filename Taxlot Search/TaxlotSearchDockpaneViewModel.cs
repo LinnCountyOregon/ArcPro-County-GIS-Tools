@@ -534,9 +534,9 @@ namespace Taxlot_Search
                 if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()) || allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
                 {
                     if (TxtTaxlotMap.Length > 10)
-                        await selectTaxlotAddress(TxtTaxlotMap.Substring(0, 10));
+                        await selectTaxlotAddress(TxtTaxlotMap.Substring(0, 10).ToUpper());
                     else
-                        await selectTaxlotAddress(TxtTaxlotMap);
+                        await selectTaxlotAddress(TxtTaxlotMap.ToUpper());
                 }
                 else { MessageBox.Show("To search on taxlot MAP, the Linn County taxlot or address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
             }
@@ -548,7 +548,7 @@ namespace Taxlot_Search
             if (SelectedLayer != null)
             {
                 if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()) || allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
-                    await selectTaxlotAddress(TxtTaxlotPIN);
+                    await selectTaxlotAddress(TxtTaxlotPIN.ToUpper());
                 else { MessageBox.Show("To search on taxlot PIN, the Linn County taxlot or address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
             }
             else { MessageBox.Show("Please load the taxlots or address layer to the map.", "Taxlot/Address Search Alert"); }
