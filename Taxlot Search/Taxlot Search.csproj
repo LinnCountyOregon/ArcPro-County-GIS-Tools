@@ -11,6 +11,12 @@
     <Description>Linn County GIS Tools for ArcPro</Description>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="DarkImages\GalleryImages\AddSoils32.png" />
+    <None Remove="DarkImages\GalleryImages\AddSoils64.png" />
+    <None Remove="Images\GalleryImages\AddSoils32.png" />
+    <None Remove="Images\GalleryImages\AddSoils64.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="ArcGIS.Desktop.Framework">
       <HintPath>C:\Program Files\ArcGIS\Pro\bin\ArcGIS.Desktop.Framework.dll</HintPath>
       <CopyLocal>False</CopyLocal>
@@ -101,6 +107,8 @@
     <Content Include="DarkImages\LabelWizard32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="DarkImages\GalleryImages\AddSoils32.png" />
+    <Resource Include="DarkImages\GalleryImages\AddSoils64.png" />
     <Resource Include="DarkImages\GenericButtonPurple16.png" />
     <Resource Include="DarkImages\GenericButtonPurple32.png" />
     <Resource Include="DarkImages\GenericCheckMark16.png" />
@@ -114,6 +122,10 @@
     <Resource Include="DarkImages\SelectionSelectTool16.png" />
     <Resource Include="DarkImages\SQLQueryAdd16.png" />
     <Resource Include="DarkImages\SQLQueryNew16.png" />
+    <Resource Include="Images\GalleryImages\AddSoils32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\GalleryImages\AddSoils64.png" />
     <Resource Include="Images\GenericButtonPurple16.png" />
     <Resource Include="Images\GenericButtonPurple32.png" />
     <Resource Include="Images\GenericCheckMark16.png" />

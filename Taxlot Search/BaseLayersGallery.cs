@@ -45,6 +45,7 @@ namespace Taxlot_Search
             Add(new GalleryItem("County Boundary", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddCountyBoundary64.png", "Add the county boundary to the map"));
             Add(new GalleryItem("Roads", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddRoads64.png", "Add county roads to the map"));
             Add(new GalleryItem("Zoning", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddZoning64.png", "Add county zoning to the map"));
+            Add(new GalleryItem("Soils (code)", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddSoils64.png", "Add county soils to the map"));
 
             //Add 6 items to the gallery
             //for (int i = 0; i < 6; i++)
@@ -78,6 +79,8 @@ namespace Taxlot_Search
                 LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "roads");
             else if (item.Text == "Zoning")
                 LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Zoning");
+            else if (item.Text == "Soils (code)")
+                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Soils");
 
             base.OnClick(item);
         }

@@ -74,6 +74,7 @@ namespace Taxlot_Search
             // check if layer is already loaded
             var featurelayerCheck = MapView.Active.Map.GetLayersAsFlattenedList().OfType<FeatureLayer>().ToList();
             bool datasetLoaded = false;
+            CIMRenderer layerRenderer = null;
 
             foreach (FeatureLayer layerCheckMember in featurelayerCheck)
             {
@@ -123,6 +124,11 @@ namespace Taxlot_Search
 
                             shp_layer.SetRenderer(CreateUniqueValueRendererForZoning());
                         }
+                        else if (DataSetName.ToLower() == "soils")
+                        {
+                            layerRenderer = shp_layer.CreateRenderer(CreateUniqueValueRendererRandom());
+                            shp_layer.SetRenderer(layerRenderer);
+                        }
 
                         // return MapView.Active.GetSelectedLayers()[0] as FeatureLayer;
                         return shp_layer;
@@ -170,6 +176,11 @@ namespace Taxlot_Search
                                 // set unique values on zoning layer
                                 if (DataSetName.ToLower() == "zoning")
                                     SDElayer.SetRenderer(CreateUniqueValueRendererForZoning());
+                                else if (DataSetName.ToLower() == "soils")
+                                {
+                                    layerRenderer = SDElayer.CreateRenderer(CreateUniqueValueRendererRandom());
+                                    SDElayer.SetRenderer(layerRenderer);
+                                }
 
                                 // FeatureClassDefinition featureClassDefinition = linnPublicationSDE.GetDefinition<FeatureClassDefinition>("LinnPublication.DBO." + DataSetName);
 
@@ -872,6 +883,35 @@ namespace Taxlot_Search
             };
 
             return uniqueValueRenderer as CIMRenderer;
+        }
+
+        private static UniqueValueRendererDefinition CreateUniqueValueRendererRandom()
+        {
+            //All of these methods have to be called on the MCT
+            //if (Module1.OnUIThread)
+            //    throw new CalledOnWrongThreadException();
+
+            //StyleProjectItem style = Project.Current.GetItems<StyleProjectItem>().FirstOrDefault(s => s.Name == "ColorBrewer Schemes (RGB)");
+            StyleProjectItem style = Project.Current.GetItems<StyleProjectItem>().FirstOrDefault(s => s.Name == "ArcGIS Colors");
+            if (style == null)
+                MessageBox.Show("Error: Color Style not found (ArcGIS Colors).");
+
+
+            var colorRampList = style.SearchColorRamps("Verdant Tones");
+
+            if (colorRampList == null || colorRampList.Count == 0)
+                MessageBox.Show("Error: Color Ramp List not found (Verdant Tones)");
+
+            CIMColorRamp cimColorRamp = null;
+            cimColorRamp = colorRampList[0].ColorRamp;
+            //List<string> fieldNames = new List<string>();
+            //fieldNames.Add("MUSYM");
+            return new UniqueValueRendererDefinition()
+            {
+                ValueFields = new List<string> { "MUSYM" },
+                ColorRamp = cimColorRamp,
+                ValuesLimit = 0
+            };
         }
 
     }
