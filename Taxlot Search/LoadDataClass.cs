@@ -30,6 +30,47 @@ namespace Taxlot_Search
             }
         }
 
+        public static async void LoadImageToLayer(string imageDir, string imageName)
+        {
+            await CheckForMap();
+
+            // check if layer is already loaded
+            var featurelayerCheck = MapView.Active.Map.GetLayersAsFlattenedList().OfType<RasterLayer>().ToList();
+            bool datasetLoaded = false;
+
+            // OfType<TiledServiceLayer> only works on ortho images with cache. The non-cashed verison is probably a DynamicServiceLayer. Just ServiceLayer seems to be more generic.
+            foreach (RasterLayer layerCheckMember in featurelayerCheck)
+            {
+                if (layerCheckMember.Name.ToLower() == imageName.ToLower())
+                {
+                    await QueuedTask.Run(() => { layerCheckMember.SetVisibility(true); });
+                    datasetLoaded = true;
+                }
+            }
+
+            if (datasetLoaded == false)
+            {
+                RasterLayer loadedImage = await QueuedTask.Run<RasterLayer>(() =>
+                {
+                    try
+                    {
+                        Uri uriPath = new Uri(imageDir + "\\" + imageName);
+                        string layerName = "Linn County 2022 12in";
+
+                        var imageLayer = LayerFactory.Instance.CreateLayer(uriPath, MapView.Active.Map, 0, layerName) as RasterLayer;
+
+                        return MapView.Active.GetSelectedLayers()[0] as RasterLayer;
+                    }
+                    catch
+                    {
+                        MessageBox.Show("failed. ;(");
+                        return null;
+                    }
+                });
+            }
+
+        }
+
         public static async void LoadMapServiceToLayer(string serviceURL)
         {
             await CheckForMap();

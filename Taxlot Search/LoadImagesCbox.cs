@@ -53,7 +53,8 @@ namespace Taxlot_Search
                 Clear();
 
                 Add(new ComboBoxItem("Select Image"));
-                Add(new ComboBoxItem("Linn 2021"));
+                Add(new ComboBoxItem("Linn 2022 12in"));
+                Add(new ComboBoxItem("Linn 2021 9in"));
                 Add(new ComboBoxItem("Linn 2021 Subareas"));
                 Add(new ComboBoxItem("Linn 2017"));
                 Add(new ComboBoxItem("Linn 2017 Subareas"));
@@ -84,8 +85,10 @@ namespace Taxlot_Search
                 return;
 
             // TODO  Code behavior when selection changes.    
-            if (item.Text == "Linn 2021")
+            if (item.Text == "Linn 2021 9in")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Orthos2021_LinnCounty/MapServer");
+            else if (item.Text == "Linn 2022 12in")
+                LoadDataClass.LoadImageToLayer(@"\\lc-gis\f\Fed_2022_images", "ortho_1-1_hn_s_or043_2022_1.sid");
             else if (item.Text == "Linn 2021 Subareas")
                 Load2021Subareas();
             else if (item.Text == "Linn 2017")
