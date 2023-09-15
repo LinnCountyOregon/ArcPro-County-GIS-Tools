@@ -20,7 +20,7 @@ using System.Collections.ObjectModel;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using System.Windows.Input;
-
+using CommonArcProAddin;
 
 
 namespace Taxlot_Search
@@ -30,8 +30,6 @@ namespace Taxlot_Search
         private const string _dockPaneID = "Taxlot_Search_TaxlotSearchDockpane";
         private object _lock = new object();
         Dictionary<Map, SelectedLayerInfo> _selectedLayerInfos = new Dictionary<Map, SelectedLayerInfo>();
-        public static List<string> allowedTaxlotNames = new List<string> { "taxlots", "tax lots" };
-        public static List<string> allowedAddressNames = new List<string> { "address" };
         Map _activeMap;
         private ICommand _clearSearchListCmd;
         private ICommand _searchMapCmd;
@@ -381,7 +379,7 @@ namespace Taxlot_Search
             {
                 foreach (var layer in layers)
                 {
-                    if (allowedTaxlotNames.Contains(layer.Name.ToLower()) || allowedAddressNames.Contains(layer.Name.ToLower()))
+                    if (LoadDataClass.allowedTaxlotNames.Contains(layer.Name.ToLower()) || LoadDataClass.allowedAddressNames.Contains(layer.Name.ToLower()))
                         Layers.Add(layer);
                 }
             }
@@ -531,7 +529,7 @@ namespace Taxlot_Search
         {
             if (SelectedLayer != null)
             {
-                if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()) || allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+                if (LoadDataClass.allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()) || LoadDataClass.allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
                 {
                     if (TxtTaxlotMap.Length > 10)
                         await selectTaxlotAddress(TxtTaxlotMap.Substring(0, 10).ToUpper());
@@ -547,7 +545,7 @@ namespace Taxlot_Search
         {
             if (SelectedLayer != null)
             {
-                if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()) || allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+                if (LoadDataClass.allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()) || LoadDataClass.allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
                     await selectTaxlotAddress(TxtTaxlotPIN.ToUpper());
                 else { MessageBox.Show("To search on taxlot PIN, the Linn County taxlot or address layer must be selected in the layer dropdown list.", "Taxlot/Address Search Alert"); }
             }
@@ -556,19 +554,19 @@ namespace Taxlot_Search
 
         private async void SearchAssessorNum()
         {
-            if (!allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+            if (!LoadDataClass.allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
             {
                 var featurelayerCheck = MapView.Active.Map.GetLayersAsFlattenedList().OfType<FeatureLayer>().ToList();
                 foreach (FeatureLayer layerCheckMember in featurelayerCheck)
                 {
-                    if (allowedTaxlotNames.Contains(layerCheckMember.Name.ToLower()))
+                    if (LoadDataClass.allowedTaxlotNames.Contains(layerCheckMember.Name.ToLower()))
                         SelectedLayer = layerCheckMember;
                 }
             }
 
             if (SelectedLayer != null)
             {
-                if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+                if (LoadDataClass.allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
                 {
                     if (validateNumber(TxtAssessorNum))
                     {
@@ -585,12 +583,12 @@ namespace Taxlot_Search
 
         private async void SearchOwner()
         {
-            if (!allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+            if (!LoadDataClass.allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
             {
                 var featurelayerCheck = MapView.Active.Map.GetLayersAsFlattenedList().OfType<FeatureLayer>().ToList();
                 foreach (FeatureLayer layerCheckMember in featurelayerCheck)
                 {
-                    if (allowedTaxlotNames.Contains(layerCheckMember.Name.ToLower()))
+                    if (LoadDataClass.allowedTaxlotNames.Contains(layerCheckMember.Name.ToLower()))
                         SelectedLayer = layerCheckMember;
                 }
             }
@@ -599,7 +597,7 @@ namespace Taxlot_Search
             {
                 if (TxtOwnerLastName != "")
                 {
-                    if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+                    if (LoadDataClass.allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
                     {
                         await selectTaxlotByOwner(TxtOwnerLastName);
                     }
@@ -626,9 +624,9 @@ namespace Taxlot_Search
             if (SelectedLayer != null)
             {
                 string runMode;
-                if (allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
+                if (LoadDataClass.allowedTaxlotNames.Contains(SelectedLayer.Name.ToLower()))
                     runMode = "taxlots";
-                else if (allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+                else if (LoadDataClass.allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
                     runMode = "address";
                 else
                     runMode = "(Not Found)";
@@ -655,12 +653,22 @@ namespace Taxlot_Search
                         else if (runMode == "address")
                             queryFilter.WhereClause = "MAP_PIN = '" + mapPIN + "'";
                     }
+                    else if (mapPIN.Length == 13)
+                    {
+                        if (runMode == "address")
+                            queryFilter.WhereClause = "MAP_PIN = '" + mapPIN + "'";
+                    }
                     else
                     {
                         if (runMode == "taxlots")
                             queryFilter.WhereClause = "MAP = '" + mapPIN + "'";
                         else if (runMode == "address")
                             queryFilter.WhereClause = "MAP_NUM = '" + mapPIN + "'";
+                    }
+
+                    if (queryFilter.WhereClause == "")
+                    {
+                        queryFilter.WhereClause = "FID = -999";
                     }
 
                     Selection resultSel = SelectedLayer.Select(queryFilter, SelectionCombinationMethod.New);
@@ -713,12 +721,12 @@ namespace Taxlot_Search
 
         private async void ValidateSelectAddress()
         {
-            if (!allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+            if (!LoadDataClass.allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
             {
                 var featurelayerCheck = MapView.Active.Map.GetLayersAsFlattenedList().OfType<FeatureLayer>().ToList();
                 foreach (FeatureLayer layerCheckMember in featurelayerCheck)
                 {
-                    if (allowedAddressNames.Contains(layerCheckMember.Name.ToLower()))
+                    if (LoadDataClass.allowedAddressNames.Contains(layerCheckMember.Name.ToLower()))
                         SelectedLayer = layerCheckMember;
                 }
             }
@@ -727,7 +735,7 @@ namespace Taxlot_Search
             {
                 if (validateNumber(TxtNumber) || TxtNumber == "")
                 {
-                    if (allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
+                    if (LoadDataClass.allowedAddressNames.Contains(SelectedLayer.Name.ToLower()))
                     {
                         await selectAddressesAsync(TxtNumber, TxtStreet, SelCBoxCity);
                     }
@@ -820,9 +828,9 @@ namespace Taxlot_Search
             {
                 string layerName = SelectedLayer.Name;
                 string selectedLayer;
-                if (allowedTaxlotNames.Contains(layerName.ToLower()))
+                if (LoadDataClass.allowedTaxlotNames.Contains(layerName.ToLower()))
                     selectedLayer = "taxlots";
-                else if (allowedAddressNames.Contains(layerName.ToLower()))
+                else if (LoadDataClass.allowedAddressNames.Contains(layerName.ToLower()))
                     selectedLayer = "address";
                 else
                     selectedLayer = "(Not Found)";
@@ -899,12 +907,12 @@ namespace Taxlot_Search
             var selectionDict = args.Selection.ToDictionary();
             if (args.Selection.Count != 0)
             {            
-                if (allowedAddressNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()) || allowedTaxlotNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()))
+                if (LoadDataClass.allowedAddressNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()) || LoadDataClass.allowedTaxlotNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()))
                 {
                     string selectedLayer;
-                    if (allowedTaxlotNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()))
+                    if (LoadDataClass.allowedTaxlotNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()))
                         selectedLayer = "taxlots";
-                    else if (allowedAddressNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()))
+                    else if (LoadDataClass.allowedAddressNames.Contains(selectionDict.Keys.FirstOrDefault().Name.ToLower()))
                         selectedLayer = "address";
                     else
                         selectedLayer = "(Not Found)";
@@ -970,7 +978,7 @@ namespace Taxlot_Search
             {
                 if (layer.Map == _activeMap && layer is BasicFeatureLayer)
                 {
-                    if (allowedTaxlotNames.Contains(layer.Name.ToLower()) || allowedAddressNames.Contains(layer.Name.ToLower()))
+                    if (LoadDataClass.allowedTaxlotNames.Contains(layer.Name.ToLower()) || LoadDataClass.allowedAddressNames.Contains(layer.Name.ToLower()))
                     {
                         Layers.Add((BasicFeatureLayer)layer);
                         if (SelectedLayer == null)
@@ -1051,8 +1059,8 @@ namespace Taxlot_Search
             TaxlotSearchDockpaneViewModel.Show();
 
             await LoadDataClass.CheckForMap();
-            LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "taxlots");
-            LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Address");
+            await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "taxlots");
+            await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Address");
         }
 
     }

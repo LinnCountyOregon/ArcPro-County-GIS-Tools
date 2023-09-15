@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Threading;
+using CommonArcProAddin;
 
 namespace Taxlot_Search
 {
@@ -58,7 +59,7 @@ namespace Taxlot_Search
 
         }
 
-        protected override void OnClick(GalleryItem item)
+        protected override async void OnClick(GalleryItem item)
         {
             //TODO - insert your code to manipulate the clicked gallery item here
             //ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("selected: " + item.Text);
@@ -66,21 +67,21 @@ namespace Taxlot_Search
             if (item.Text == "Contours")
                 LoadContours();
             else if (item.Text == "Taxlots")
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "taxlots");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "taxlots");
             else if (item.Text == "Addresses")
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Address");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Address");
             else if (item.Text == "City Limits")
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Citylimits");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Citylimits");
             else if (item.Text == "Entire Cities")
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "EntireCities");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "EntireCities");
             else if (item.Text == "County Boundary")
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "countyline");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "countyline");
             else if (item.Text == "Roads")
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "roads");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "roads");
             else if (item.Text == "Zoning")
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Zoning");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Zoning");
             else if (item.Text == "Soils (code)")
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Soils");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Soils");
 
             base.OnClick(item);
         }
@@ -88,9 +89,9 @@ namespace Taxlot_Search
         public static async void LoadContours()
         {
             await LoadDataClass.CheckForMap();
-            LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "5ftnorth");
-            LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "5ftsouth");
-            LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "2fturban");
+            await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "5ftnorth");
+            await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "5ftsouth");
+            await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "2fturban");
         }
 
     }

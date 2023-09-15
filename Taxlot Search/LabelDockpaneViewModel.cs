@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using CommonArcProAddin;
 
 
 namespace Taxlot_Search
@@ -409,7 +410,7 @@ namespace Taxlot_Search
             }
         }
 
-        private void OnActiveToolChanged(ToolEventArgs args)
+        private async void OnActiveToolChanged(ToolEventArgs args)
         {
             if (args.CurrentID == _selectToolID)
             {
@@ -426,7 +427,7 @@ namespace Taxlot_Search
                 SetProperty(ref _selectZoningToolActive, false, () => SelectZoningToolActive);
                 SetProperty(ref _selectRoadToolActive, false, () => SelectRoadToolActive);
                 SetProperty(ref _selectLayoutToolActive, false, () => SelectLayoutToolActive);
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "taxlots");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "taxlots");
             }
             else if (args.CurrentID == _selectZoningToolID)
             {
@@ -435,7 +436,7 @@ namespace Taxlot_Search
                 SetProperty(ref _selectZoningToolActive, true, () => SelectZoningToolActive);
                 SetProperty(ref _selectRoadToolActive, false, () => SelectRoadToolActive);
                 SetProperty(ref _selectLayoutToolActive, false, () => SelectLayoutToolActive);
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Zoning");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Zoning");
             }
             else if (args.CurrentID == _selectRoadToolID)
             {
@@ -444,7 +445,7 @@ namespace Taxlot_Search
                 SetProperty(ref _selectZoningToolActive, false, () => SelectZoningToolActive);
                 SetProperty(ref _selectRoadToolActive, true, () => SelectRoadToolActive);
                 SetProperty(ref _selectLayoutToolActive, false, () => SelectLayoutToolActive);
-                LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "roads");
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "roads");
             }
             else if (args.CurrentID == _selectLayoutToolID)
             {

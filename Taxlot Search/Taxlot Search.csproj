@@ -11,6 +11,9 @@
     <Description>Linn County GIS Tools for ArcPro</Description>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="LoadDataClass.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="DarkImages\GalleryImages\AddSoils32.png" />
     <None Remove="DarkImages\GalleryImages\AddSoils64.png" />
     <None Remove="Images\GalleryImages\AddSoils32.png" />
@@ -224,5 +227,6 @@
     <None Include="Images\GalleryImages\AddZoning64.png" />
     <None Include="Images\GalleryImages\Thumbs.db" />
   </ItemGroup>
+  <Import Project="..\..\CommonArcProAddin\CommonArcProAddin.projitems" Label="Shared" />
   <Import Project="C:\Program Files\ArcGIS\Pro\bin\Esri.ProApp.SDK.Desktop.targets" Condition="Exists('C:\Program Files\ArcGIS\Pro\bin\Esri.ProApp.SDK.Desktop.targets') AND !Exists('Esri.ArcGISPro.Extensions.targets')" />
 </Project>

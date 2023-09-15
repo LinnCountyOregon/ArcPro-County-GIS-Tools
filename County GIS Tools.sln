@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taxlot Search", "Taxlot Search\Taxlot Search.csproj", "{83AD4350-4AD1-4F30-8AE6-CA5DAA0326B7}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonArcProAddin", "..\CommonArcProAddin\CommonArcProAddin.shproj", "{DF4AC427-77C4-42FC-950D-B28AC3DAC3B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,5 +23,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96F1E7A1-30BB-4080-AD46-738EF9575E71}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\CommonArcProAddin\CommonArcProAddin.projitems*{83ad4350-4ad1-4f30-8ae6-ca5daa0326b7}*SharedItemsImports = 5
+		..\CommonArcProAddin\CommonArcProAddin.projitems*{df4ac427-77c4-42fc-950d-b28ac3dac3b0}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
