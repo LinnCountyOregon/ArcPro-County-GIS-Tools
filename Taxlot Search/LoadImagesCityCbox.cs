@@ -54,6 +54,7 @@ namespace Taxlot_Search
                 Clear();
 
                 Add(new ComboBoxItem("Select Image"));
+                Add(new ComboBoxItem("Albany 2023"));
                 Add(new ComboBoxItem("Albany 2019"));
                 Add(new ComboBoxItem("Albany 2015"));
                 Add(new ComboBoxItem("Albany 2010"));
@@ -91,12 +92,14 @@ namespace Taxlot_Search
             // TODO  Code behavior when selection changes.    
             if (item.Text == "Albany 2019")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/baselayers/Pub_Albany_2019_SID/MapServer");
+            else if (item.Text == "Albany 2023")
+                LoadDataClass.LoadImageToLayer(@"\\lc-gis\f\Albany_2023", "Albany_2023.sid");
             else if (item.Text == "Albany 2015")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/AlbanyOrtho2015/MapServer");
             else if (item.Text == "Albany 2010")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Pub_Albany_2010_Orthos/MapServer");
             else if (item.Text == "Albany 2006")
-                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Pub_Albany_2006_Orthos/MapServer");
+                LoadDataClass.LoadImageToLayer(@"\\lc-gis\Ortho2", "Albany06.sid");
             else if (item.Text == "Lebanon 2017")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Pub_Lebanon_Orthos_2017/MapServer");
             else if (item.Text == "Lebanon 2012")
