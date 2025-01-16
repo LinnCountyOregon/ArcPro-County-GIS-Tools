@@ -60,6 +60,7 @@ namespace Taxlot_Search
                 Add(new ComboBoxItem("Linn 2005"));
                 Add(new ComboBoxItem("Linn BW 2000"));
                 Add(new ComboBoxItem("Linn 1996"));
+                Add(new ComboBoxItem("Linn 1967"));
                 Add(new ComboBoxItem("Linn 1948"));
 
                 _isInitialized = true;
@@ -86,11 +87,13 @@ namespace Taxlot_Search
 
             // TODO  Code behavior when selection changes.    
             if (item.Text == "Linn 2005")
-                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Pub_Linn_2005_Orthos/MapServer");
+                LoadDataClass.LoadImageToLayer(@"\\lc-gis\f\orthos2005\orthos2005_mosaic.gdb", "Orthos2005_tif_webM");
             if (item.Text == "Linn BW 2000")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Orthos2000_bw_webM/MapServer");
             if (item.Text == "Linn 1996")
-                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Orthos1996_bw_webM/MapServer");
+                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/LinnCounty1996_bw_tile/MapServer");
+            if (item.Text == "Linn 1967")
+                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Historical_1967_Aerials/MapServer");
             if (item.Text == "Linn 1948")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Pub_1948_Photos_location_not_exact/MapServer");
 

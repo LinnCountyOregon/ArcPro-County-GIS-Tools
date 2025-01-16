@@ -55,6 +55,7 @@ namespace Taxlot_Search
 
                 Add(new ComboBoxItem("Select Image"));
                 Add(new ComboBoxItem("Linn 2022 12in"));
+                Add(new ComboBoxItem("Linn 2022 12in SID"));
                 Add(new ComboBoxItem("Linn 2021 9in"));
                 Add(new ComboBoxItem("Linn 2021 Subareas"));
                 Add(new ComboBoxItem("Linn 2017"));
@@ -87,9 +88,11 @@ namespace Taxlot_Search
 
             // TODO  Code behavior when selection changes.    
             if (item.Text == "Linn 2021 9in")
-                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Orthos2021_LinnCounty/MapServer");
-            else if (item.Text == "Linn 2022 12in")
+                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/LinnCounty2021_L21_tile/MapServer");
+            else if (item.Text == "Linn 2022 12in SID")
                 LoadDataClass.LoadImageToLayer(@"\\lc-gis\f\Fed_2022_images", "ortho_1-1_hn_s_or043_2022_1.sid");
+            else if (item.Text == "Linn 2022 12in")
+                LoadDataClass.LoadMapServiceToLayer(@"https://imagery.oregonexplorer.info/arcgis/rest/services/OSIP_2022/OSIP_2022_SL/ImageServer");
             else if (item.Text == "Linn 2021 Subareas")
                 Load2021Subareas();
             else if (item.Text == "Linn 2017")
@@ -105,10 +108,10 @@ namespace Taxlot_Search
         public static async void Load2021Subareas()
         {
             await LoadDataClass.CheckForMap();
-            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Ortho_2021_SweetHome/MapServer");
-            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Ortho2021_Millersburg/MapServer");
-            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Ortho_2021_Brownsville/MapServer");
-            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Orthos_2021_Lyons_MillCity/MapServer");
+            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Ortho_2021_SweetHome_tile/MapServer");
+            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Ortho_2021_Millersburg_tile/MapServer");
+            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Ortho_2021_Brownsville_tile/MapServer");
+            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Ortho_2021_Lyons_MillCity_tile/MapServer");
         }
         public static async void Load2017Subareas()
         {
