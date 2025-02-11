@@ -42,7 +42,7 @@ namespace Taxlot_Search
             Add(new GalleryItem("Taxlots", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddTaxlots64.png", "Add Taxlots to the map"));
             Add(new GalleryItem("Addresses", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddAddresses64.png", "Add Addresses to the map"));
             Add(new GalleryItem("City Limits", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddCities64.png", "Add City Limits to the map"));
-            Add(new GalleryItem("Entire Cities", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddCities64.png", "Add Entire Cities to the map"));
+            Add(new GalleryItem("UGB", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddCities64.png", "Add UGB to the map"));
             Add(new GalleryItem("County Boundary", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddCountyBoundary64.png", "Add the county boundary to the map"));
             Add(new GalleryItem("Roads", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddRoads64.png", "Add county roads to the map"));
             Add(new GalleryItem("Zoning", "pack://application:,,,/Taxlot Search;component/Images/GalleryImages/AddZoning64.png", "Add county zoning to the map"));
@@ -71,15 +71,15 @@ namespace Taxlot_Search
             else if (item.Text == "Addresses")
                 await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Address");
             else if (item.Text == "City Limits")
-                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Citylimits");
-            else if (item.Text == "Entire Cities")
                 await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "EntireCities");
+            else if (item.Text == "UGB")
+                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "UGB");
             else if (item.Text == "County Boundary")
                 await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "countyline");
             else if (item.Text == "Roads")
                 await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "roads");
             else if (item.Text == "Zoning")
-                await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Zoning");
+                await LoadDataClass.LoadLYRXToLayer(LoadDataClass.linnOrigLayerFiles + @"\Zoning_web_match.lyrx", "Zoning");
             else if (item.Text == "Soils (code)")
                 await LoadDataClass.LoadDatasetToLayer(LoadDataClass.localGISdirectory, "Soils");
 
