@@ -638,6 +638,7 @@ namespace Taxlot_Search
 
                     // create query filter for selection
                     QueryFilter queryFilter = new QueryFilter();
+                    string defaultDefinitionQuery = "";
 
                     if (AssessorNum > 0)
                     {
@@ -671,7 +672,24 @@ namespace Taxlot_Search
                         queryFilter.WhereClause = "FID = -999";
                     }
 
+                    //  turn off definition query for search if necessary
+                    if (SelectedLayer.ActiveDefinitionQuery != null && SelectedLayer.ActiveDefinitionQuery.Name != "allFeatures")
+                    {
+                        defaultDefinitionQuery = SelectedLayer.ActiveDefinitionQuery.Name;
+                        try
+                        {
+                            SelectedLayer.SetActiveDefinitionQuery("allFeatures");
+                        }
+                        catch
+                        {
+                            SelectedLayer.InsertDefinitionQuery(new DefinitionQuery("allFeatures", "1=1"), true);
+                        }
+                    }
+
                     Selection resultSel = SelectedLayer.Select(queryFilter, SelectionCombinationMethod.New);
+
+                    if (defaultDefinitionQuery != "")
+                        SelectedLayer.SetActiveDefinitionQuery(defaultDefinitionQuery);
 
                     if (resultSel.GetCount() == 0)
                         if (AssessorNum > 0)
@@ -703,8 +721,26 @@ namespace Taxlot_Search
                     // create query filter for selection
                     QueryFilter queryFilter = new QueryFilter();
                     queryFilter.WhereClause = "OWNER1 LIKE '%" + ownerName.ToUpper() + "%'";
+                    string defaultDefinitionQuery = "";
+
+                    //  turn off definition query for search if necessary
+                    if (SelectedLayer.ActiveDefinitionQuery != null && SelectedLayer.ActiveDefinitionQuery.Name != "allFeatures")
+                    {
+                        defaultDefinitionQuery = SelectedLayer.ActiveDefinitionQuery.Name;
+                        try
+                        {
+                            SelectedLayer.SetActiveDefinitionQuery("allFeatures");
+                        }
+                        catch
+                        {
+                            SelectedLayer.InsertDefinitionQuery(new DefinitionQuery("allFeatures", "1=1"), true);
+                        }
+                    }
 
                     Selection resultSel = SelectedLayer.Select(queryFilter, SelectionCombinationMethod.New);
+
+                    if (defaultDefinitionQuery != "")
+                        SelectedLayer.SetActiveDefinitionQuery(defaultDefinitionQuery);
 
                     if (resultSel.GetCount() == 0)
                         MessageBox.Show("Owner name: " + ownerName + " not found on layer: " + layerName, "Taxlot/Address Search Alert");
@@ -759,6 +795,7 @@ namespace Taxlot_Search
 
                     // create query filter for selection
                     QueryFilter queryFilter = new QueryFilter();
+                    string defaultDefinitionQuery = "";
                     //List<string> addressListAsync = new List<string>();
 
                     if (numberVal != "" && numberVal != null)
@@ -796,7 +833,25 @@ namespace Taxlot_Search
                         }
                     }
 
+                    //  turn off definition query for search if necessary
+                    if (SelectedLayer.ActiveDefinitionQuery != null && SelectedLayer.ActiveDefinitionQuery.Name != "allFeatures")
+                    {
+                        defaultDefinitionQuery = SelectedLayer.ActiveDefinitionQuery.Name;
+                        try
+                        {
+                            SelectedLayer.SetActiveDefinitionQuery("allFeatures");
+                        }
+                        catch
+                        {
+                            SelectedLayer.InsertDefinitionQuery(new DefinitionQuery("allFeatures", "1=1"), true);
+                        }
+                    }
+                    
                     Selection resultSel = SelectedLayer.Select(queryFilter, SelectionCombinationMethod.New);
+
+                    if (defaultDefinitionQuery != "")
+                        SelectedLayer.SetActiveDefinitionQuery(defaultDefinitionQuery);
+
                     //using (RowCursor rowCursor = resultSel.Search())
                     //{
                     //    while (rowCursor.MoveNext())
@@ -836,6 +891,7 @@ namespace Taxlot_Search
                     selectedLayer = "(Not Found)";
 
                 string propInfoString = SelPropertyInfoList;
+                string defaultDefinitionQuery = "";
                 var featLayer = MapView.Active.Map.FindLayers(layerName).FirstOrDefault() as FeatureLayer;
                 if (featLayer != null)
                 {
@@ -854,7 +910,24 @@ namespace Taxlot_Search
                         else
                             return;
 
+                        // turn off definition query for search if necessary
+                        if (featLayer.ActiveDefinitionQuery != null && featLayer.ActiveDefinitionQuery.Name != "allFeatures")
+                        {
+                            defaultDefinitionQuery = featLayer.ActiveDefinitionQuery.Name;
+                            try
+                            {
+                                featLayer.SetActiveDefinitionQuery("allFeatures");
+                            }
+                            catch
+                            {
+                                featLayer.InsertDefinitionQuery(new DefinitionQuery("allFeatures", "1=1"), true);
+                            }
+                        }
+
                         var resultSel = featLayer.Select(queryFilter, SelectionCombinationMethod.New);
+
+                        if (defaultDefinitionQuery != "")
+                            featLayer.SetActiveDefinitionQuery(defaultDefinitionQuery);
 
                         if (resultSel.GetCount() > 0)
                         {

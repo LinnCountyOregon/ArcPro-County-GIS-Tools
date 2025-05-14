@@ -96,7 +96,7 @@ namespace Taxlot_Search
             else if (item.Text == "Linn 2021 Subareas")
                 Load2021Subareas();
             else if (item.Text == "Linn 2017")
-                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Orthos2017_webM/MapServer");
+                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/LinnCounty2017_tile/MapServer");
             else if (item.Text == "Linn 2017 Subareas")
                 Load2017Subareas();
             else if (item.Text == "Linn 2014")
