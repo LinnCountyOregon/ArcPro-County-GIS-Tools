@@ -635,6 +635,7 @@ namespace Taxlot_Search
                 {
                     // clear all map selections
                     MapView.Active.Map.SetSelection(null);
+                    var SelFieldList = SelectedLayer.GetFieldDescriptions();
 
                     // create query filter for selection
                     QueryFilter queryFilter = new QueryFilter();
@@ -643,33 +644,72 @@ namespace Taxlot_Search
                     if (AssessorNum > 0)
                     {
                         if (runMode == "taxlots")
-                            queryFilter.WhereClause = "ACTNUM = " + AssessorNum.ToString();
+                        {
+                            if (SelFieldList.Exists(x => x.Name == "ACTNUM"))
+                                queryFilter.WhereClause = "ACTNUM = " + AssessorNum.ToString();
+                            else
+                                return exitWithMessage(runMode, "ACTNUM");
+                        }
                         else if (runMode == "address")
-                            queryFilter.WhereClause = "ACT_NUM = " + AssessorNum.ToString();
+                        {
+                            if (SelFieldList.Exists(x => x.Name == "ACT_NUM"))
+                                queryFilter.WhereClause = "ACT_NUM = " + AssessorNum.ToString();
+                            else
+                                return exitWithMessage(runMode, "ACT_NUM");
+
+                        }
                     }
                     else if (mapPIN.Length == 15)
                     {
                         if (runMode == "taxlots")
-                            queryFilter.WhereClause = "PIN = '" + mapPIN + "'";
+                        {
+                            if (SelFieldList.Exists(x => x.Name == "PIN"))
+                                queryFilter.WhereClause = "PIN = '" + mapPIN + "'";
+                            else
+                                return exitWithMessage(runMode, "PIN");
+                        }
                         else if (runMode == "address")
-                            queryFilter.WhereClause = "MAP_PIN = '" + mapPIN + "'";
+                        {
+                            if (SelFieldList.Exists(x => x.Name == "MAP_PIN"))
+                                queryFilter.WhereClause = "MAP_PIN = '" + mapPIN + "'";
+                            else
+                                return exitWithMessage(runMode, "MAP_PIN");
+                        }
+                            
                     }
                     else if (mapPIN.Length == 13)
                     {
                         if (runMode == "address")
-                            queryFilter.WhereClause = "MAP_PIN = '" + mapPIN + "'";
+                        {
+                            if (SelFieldList.Exists(x => x.Name == "MAP_PIN"))
+                                queryFilter.WhereClause = "MAP_PIN = '" + mapPIN + "'";
+                            else
+                                return exitWithMessage(runMode, "MAP_PIN");
+                        }
+                            
                     }
                     else
                     {
                         if (runMode == "taxlots")
-                            queryFilter.WhereClause = "MAP = '" + mapPIN + "'";
+                        {
+                            if (SelFieldList.Exists(x => x.Name == "MAP"))
+                                queryFilter.WhereClause = "MAP = '" + mapPIN + "'";
+                            else
+                                return exitWithMessage(runMode, "MAP");
+                        }                            
                         else if (runMode == "address")
-                            queryFilter.WhereClause = "MAP_NUM = '" + mapPIN + "'";
+                        {
+                            if (SelFieldList.Exists(x => x.Name == "MAP_NUM"))
+                                queryFilter.WhereClause = "MAP_NUM = '" + mapPIN + "'";
+                            else
+                                return exitWithMessage(runMode, "MAP_NUM");
+                        }
+                            
                     }
 
                     if (queryFilter.WhereClause == "")
                     {
-                        queryFilter.WhereClause = "FID = -999";
+                        return exitWithMessage(runMode, "NONE");
                     }
 
                     //  turn off definition query for search if necessary
@@ -707,6 +747,12 @@ namespace Taxlot_Search
             }
         }
 
+        private Selection exitWithMessage(string runMode, string fieldName)
+        {
+            MessageBox.Show("Search Failed: There is no field " + fieldName + " for search mode " + runMode);
+            return null;
+        }
+
         private async Task selectTaxlotByOwner(string ownerName)
         {
             //var featLayer = MapView.Active.Map.FindLayers(cBoxLayer.Text).FirstOrDefault() as FeatureLayer;
@@ -717,13 +763,19 @@ namespace Taxlot_Search
                 {
                     // clear all map selections
                     MapView.Active.Map.SetSelection(null);
-
-                    // create query filter for selection
                     QueryFilter queryFilter = new QueryFilter();
-                    queryFilter.WhereClause = "OWNER1 LIKE '%" + ownerName.ToUpper() + "%'";
-                    string defaultDefinitionQuery = "";
+
+                    var SelFieldList = SelectedLayer.GetFieldDescriptions();
+                    if (SelFieldList.Exists(x => x.Name == "OWNER1"))
+                    {
+                        // create query filter for selection
+                        queryFilter.WhereClause = "OWNER1 LIKE '%" + ownerName.ToUpper() + "%'";
+                    }
+                    else
+                        return exitWithMessage("Owner", "OWNER1");
 
                     //  turn off definition query for search if necessary
+                    string defaultDefinitionQuery = "";
                     if (SelectedLayer.ActiveDefinitionQuery != null && SelectedLayer.ActiveDefinitionQuery.Name != "allFeatures")
                     {
                         defaultDefinitionQuery = SelectedLayer.ActiveDefinitionQuery.Name;
@@ -788,13 +840,15 @@ namespace Taxlot_Search
             if (SelectedLayer != null)
             {
                 //string layerName = cBoxLayer.Text;
-                await QueuedTask.Run(() =>
+                Selection featSelection = await QueuedTask.Run(() =>
                 {
                     // clear all map selections
                     MapView.Active.Map.SetSelection(null);
 
                     // create query filter for selection
                     QueryFilter queryFilter = new QueryFilter();
+                    var SelFieldList = SelectedLayer.GetFieldDescriptions();
+
                     string defaultDefinitionQuery = "";
                     //List<string> addressListAsync = new List<string>();
 
@@ -803,16 +857,36 @@ namespace Taxlot_Search
                         if (streetVal != "" && streetVal != null)
                         {
                             if (cityVal != "Entire County")
-                                queryFilter.WhereClause = "NUMBER = " + numberVal + " and " + "STREET LIKE '%" + streetVal.ToUpper() + "%'" + " and " + "CITY = '" + cityVal.ToUpper() + "'";
+                            {
+                                if (SelFieldList.Exists(x => x.Name == "NUMBER") && SelFieldList.Exists(y => y.Name == "STREET") && SelFieldList.Exists(z => z.Name == "CITY"))
+                                    queryFilter.WhereClause = "NUMBER = " + numberVal + " and " + "STREET LIKE '%" + streetVal.ToUpper() + "%'" + " and " + "CITY = '" + cityVal.ToUpper() + "'";
+                                else
+                                    return exitWithMessage("Num/St/City", "NUMBER/STREET/CiTY");
+                            }
                             else
-                                queryFilter.WhereClause = "NUMBER = " + numberVal + " and " + "STREET LIKE '%" + streetVal.ToUpper() + "%'";
+                            {
+                                if (SelFieldList.Exists(x => x.Name == "NUMBER") && SelFieldList.Exists(y => y.Name == "STREET"))
+                                    queryFilter.WhereClause = "NUMBER = " + numberVal + " and " + "STREET LIKE '%" + streetVal.ToUpper() + "%'";
+                                else
+                                    return exitWithMessage("Num/Street", "NUMBER/STREET");
+                            }                                
                         }
                         else
                         {
                             if (cityVal != "Entire County")
-                                queryFilter.WhereClause = "NUMBER = " + numberVal + " and " + "CITY = '" + cityVal.ToUpper() + "'";
+                            {
+                                if (SelFieldList.Exists(x => x.Name == "NUMBER") && SelFieldList.Exists(y => y.Name == "CITY"))
+                                    queryFilter.WhereClause = "NUMBER = " + numberVal + " and " + "CITY = '" + cityVal.ToUpper() + "'";
+                                else
+                                    return exitWithMessage("Num/City", "NUMBER/CITY");
+                            }                                
                             else
-                                queryFilter.WhereClause = "NUMBER = " + numberVal;
+                            {
+                                if (SelFieldList.Exists(x => x.Name == "NUMBER"))
+                                    queryFilter.WhereClause = "NUMBER = " + numberVal;
+                                else
+                                    return exitWithMessage("Number", "NUMBER");
+                            }                                
                         }
                     }
                     else
@@ -820,16 +894,31 @@ namespace Taxlot_Search
                         if (streetVal != "" && streetVal != null)
                         {
                             if (cityVal != "Entire County")
-                                queryFilter.WhereClause = "STREET LIKE '%" + streetVal.ToUpper() + "%'" + " and " + "CITY = '" + cityVal.ToUpper() + "'";
+                            {
+                                if (SelFieldList.Exists(x => x.Name == "STREET") && SelFieldList.Exists(y => y.Name == "CITY"))
+                                    queryFilter.WhereClause = "STREET LIKE '%" + streetVal.ToUpper() + "%'" + " and " + "CITY = '" + cityVal.ToUpper() + "'";
+                                return exitWithMessage("Str/City", "STREET/CITY");
+                            }
                             else
-                                queryFilter.WhereClause = "STREET LIKE '%" + streetVal.ToUpper() + "%'";
+                            {
+                                if (SelFieldList.Exists(x => x.Name == "STREET"))
+                                    queryFilter.WhereClause = "STREET LIKE '%" + streetVal.ToUpper() + "%'";
+                                else
+                                    return exitWithMessage("Street", "STREET");
+                            }
+                                
                         }
                         else
                         {
                             if (cityVal != "Entire County")
-                                queryFilter.WhereClause = "CITY = '" + cityVal.ToUpper() + "'";
+                            {
+                                if (SelFieldList.Exists(x => x.Name == "CITY"))
+                                    queryFilter.WhereClause = "CITY = '" + cityVal.ToUpper() + "'";
+                                else
+                                    return exitWithMessage("City", "CITY");
+                            }                                
                             else
-                                return;
+                                return null;
                         }
                     }
 
@@ -871,7 +960,7 @@ namespace Taxlot_Search
                     //MapView.Active.ZoomOutFixed();
                     //}
 
-                    return;
+                    return resultSel;
                 });
             }
         }

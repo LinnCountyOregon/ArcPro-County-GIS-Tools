@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArcGIS defaultAssembly="Taxlot Search.dll" defaultNamespace="Taxlot_Search" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{13ad4350-4ad1-4f30-8ae6-ca5daa0326b7}" version="1.4.11" desktopVersion="3.3">
+  <AddInInfo id="{13ad4350-4ad1-4f30-8ae6-ca5daa0326b7}" version="1.4.12" desktopVersion="3.3">
     <Name>Linn_County_Tools</Name>
     <Description>Find taxlots in the Linn County taxlot layer by map/pin or assessor number</Description>
     <Image>Images\mapSearch32.png</Image>
     <Author>Keith Olsen, kolsen@co.linn.or.us</Author>
     <Company>Linn County, www.co.linn.or.us</Company>
-    <Date>14 May 2025</Date>
+    <Date>22 Aug 2025</Date>
     <Subject>Map Exploration</Subject>
     <!-- Note subject can be one or more of these topics:
                     Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
