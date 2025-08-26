@@ -54,6 +54,7 @@ namespace Taxlot_Search
                 Clear();
 
                 Add(new ComboBoxItem("Select Image"));
+                Add(new ComboBoxItem("Linn 2024 12in"));
                 Add(new ComboBoxItem("Linn 2022 12in"));
                 Add(new ComboBoxItem("Linn 2022 12in SID"));
                 Add(new ComboBoxItem("Linn 2021 9in"));
@@ -87,12 +88,15 @@ namespace Taxlot_Search
                 return;
 
             // TODO  Code behavior when selection changes.    
+            // Note: for imagery, State Lambert reprojects faster than Web Mercator when ArcPro is in the Linn County Projection.
             if (item.Text == "Linn 2021 9in")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/LinnCounty2021_L21_tile/MapServer");
             else if (item.Text == "Linn 2022 12in SID")
                 LoadDataClass.LoadImageToLayer(@"\\lc-gis\f\Fed_2022_images", "ortho_1-1_hn_s_or043_2022_1.sid");
             else if (item.Text == "Linn 2022 12in")
                 LoadDataClass.LoadMapServiceToLayer(@"https://imagery.oregonexplorer.info/arcgis/rest/services/OSIP_2022/OSIP_2022_SL/ImageServer");
+            else if (item.Text == "Linn 2024 12in")
+                LoadDataClass.LoadMapServiceToLayer(@"https://imagery.oregonexplorer.info/arcgis/rest/services/OSIP_2024/OSIP_2024_SL/ImageServer");
             else if (item.Text == "Linn 2021 Subareas")
                 Load2021Subareas();
             else if (item.Text == "Linn 2017")
