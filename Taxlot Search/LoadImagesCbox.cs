@@ -95,7 +95,7 @@ namespace Taxlot_Search
             else if (item.Text == "Linn 2022 12in SID")
                 LoadDataClass.LoadImageToLayer(@"\\lc-gis\f\Fed_2022_images", "ortho_1-1_hn_s_or043_2022_1.sid");
             else if (item.Text == "Linn 2025 6in")
-                LoadDataClass.LoadImageToLayer(@"\\lc-gis\f\Orthos2025\250120 Linn County Orthos\Orthophotography Data\MrSID\Mosaic", "250120_LinnCounty_50to1.sid");
+                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/LinnCounty2025_L21_tile/MapServer");
             else if (item.Text == "Linn 2022 12in")
                 LoadDataClass.LoadMapServiceToLayer(@"https://imagery.oregonexplorer.info/arcgis/rest/services/OSIP_2022/OSIP_2022_SL/ImageServer");
             else if (item.Text == "Linn 2024 12in")
