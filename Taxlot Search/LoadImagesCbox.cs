@@ -116,7 +116,7 @@ namespace Taxlot_Search
         {
             await LoadDataClass.CheckForMap();
             LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Ortho_2021_SweetHome_tile/MapServer");
-            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Ortho_2021_Millersburg_tile/MapServer");
+            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Millersburg_2021_Ortho_tile/MapServer");
             LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Ortho_2021_Brownsville_tile/MapServer");
             LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Ortho_2021_Lyons_MillCity_tile/MapServer");
         }
@@ -126,7 +126,7 @@ namespace Taxlot_Search
             LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/pub_ortho2017_6inch_Millersburg/MapServer");
             LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/pub_orthos2017_6inch_Harrisburg/MapServer");
             LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/pub_orthos2017_6inch_Scio/MapServer");
-            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/pub_orthos2017_6inch_Brownsville/MapServer");
+            LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Pub_Brownsville_Orthos_2017_tile/MapServer");
         }
     }
 }
