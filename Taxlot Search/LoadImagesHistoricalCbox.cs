@@ -60,6 +60,7 @@ namespace Taxlot_Search
                 Add(new ComboBoxItem("Linn 2005"));
                 Add(new ComboBoxItem("Linn BW 2000"));
                 Add(new ComboBoxItem("Linn 1996"));
+                Add(new ComboBoxItem("Linn 1978"));
                 Add(new ComboBoxItem("Linn 1967"));
                 Add(new ComboBoxItem("Linn 1948"));
 
@@ -93,6 +94,8 @@ namespace Taxlot_Search
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Linn_County_2000_BW_Ortho/MapServer");
             if (item.Text == "Linn 1996")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/LinnCounty1996_bw_tile/MapServer");
+            if (item.Text == "Linn 1978")
+                LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/public/Photos_1978/MapServer");
             if (item.Text == "Linn 1967")
                 LoadDataClass.LoadMapServiceToLayer(@"https://gis.co.linn.or.us/public/rest/services/Hosted/Historical_1967_Aerials/MapServer");
             if (item.Text == "Linn 1948")
